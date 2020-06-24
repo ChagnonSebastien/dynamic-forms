@@ -1,25 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Container, Row, Col, Jumbotron } from 'react-bootstrap';
+import FormBuilder from './form-builder/FormBuilder';
 
-function App() {
+const App = () => {
+  const [formContent, setFormContent] = useState();
+  const [formAnswers, setFormAnswers] = useState();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container fluid>
+      <Row>
+        <Col>
+          <Jumbotron style={{ background: '#ddd' }}>
+            <FormBuilder
+              initialForm={{}}
+              submitForm={(form) => setFormContent(form)}
+              languages={['fr', 'en', 'es']}
+            />
+          </Jumbotron>
+        </Col>
+        <Col >
+          <Jumbotron style={{ background: '#ddd' }}>
+            Form
+          </Jumbotron>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
