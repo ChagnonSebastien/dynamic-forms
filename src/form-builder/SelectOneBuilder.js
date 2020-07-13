@@ -4,12 +4,18 @@ import { Form, InputGroup, Col, Button } from 'react-bootstrap';
 import { v4 as uuid } from 'uuid';
 
 export const checkFields = (data, language) => {
-  if (!data || !data.questions) {
+  if (!data || !data.questions || !data.answers) {
     return false;
   }
 
   const questionRef = data.questions.find((question) => question.language === language);
   if (!questionRef || !questionRef.text){
+    return false;
+  }
+
+  const answerLanguageOK = data.answers.map((answer) => answer.content.find((specific) => specific.language === language));
+  const allAnswersSet = answerLanguageOK.reduce((notFound, value) => notFound && (value !== undefined && value.text), true);
+  if (!allAnswersSet) {
     return false;
   }
 
@@ -106,13 +112,62 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
         </Col>
       </Form.Row>
       {data.answers
-        ? data.answers.map((answer, index) => (
-          <Form.Row>
-            <Col>
-              <p>Choice</p>
-            </Col>
-          </Form.Row>
-        )) : null}
+        ? data.answers.map((answer, index) => {
+          const { content } = answer;
+          const specificRef = content.find((specific) => specific.language === language);
+          return (
+            <Form.Row key={answer.id}>
+              <Col>
+                <p>Choice</p>
+              </Col>
+              <Col>
+                <Form.Control
+                  type="text"
+                  value={specificRef ? specificRef.text : ''}
+                  placeholder="Option"
+                  onChange={(event) => {
+                    event.persist();
+                    setForm((prefForm) => prefForm.map((question) => {
+                      if (question.id === id) {
+                        const { data, ...otherQuestionProps } = question;
+                        const { answers, ...otherDataProps } = data;
+                        return {
+                          data: {
+                            answers: answers.map((a, i) => {
+                              if (i === index) {
+                                if (specificRef) {
+                                  return {
+                                    id: a.id,
+                                    content: content.map((specific) => (
+                                      specific.language === language
+                                        ? { language, text: event.target.value }
+                                        : specific
+                                    ))
+                                  };
+                                }
+
+                                const newContent = content ? content.map((specific) => specific) : [];
+                                newContent.push({ language, text: event.target.value });
+                                return { id: a.id, content: newContent };
+                              }
+                              return a;
+                            }),
+                            ...otherDataProps,
+                          },
+                          ...otherQuestionProps,
+                        };
+                      }
+                      return question;
+                    }));
+                  }}
+                />
+              </Col>
+              <Col>
+
+              </Col>
+            </Form.Row>
+          )
+        }) : null}
       <Form.Row className="justify-content-md-end">
         <Col xs="auto">
           <Button

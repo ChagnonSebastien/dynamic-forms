@@ -19,8 +19,6 @@ const CheckboxBuilder = ({ id, data, setForm, language }) => {
   const questionRef = data.questions
     ? data.questions.find((question) => question.language === language)
     : null;
-
-  const question = questionRef ? questionRef.text : '';
   
   return (
     <Form>
@@ -32,7 +30,7 @@ const CheckboxBuilder = ({ id, data, setForm, language }) => {
             </InputGroup.Prepend>
             <Form.Control
               type="text"
-              value={question}
+              value={questionRef ? questionRef.text : ''}
               placeholder={`${language.toUpperCase()} question...`}
               onChange={(event) => {
                 event.persist();
@@ -44,10 +42,10 @@ const CheckboxBuilder = ({ id, data, setForm, language }) => {
                     if (questionRef) {
                       return {
                         data: { 
-                          questions: questions.map((question) => (
-                            question.language === language
+                          questions: questions.map((q) => (
+                            q.language === language
                               ? { language, text: event.target.value }
-                              : question
+                              : q
                           )),
                           ...otherDataProps,
                         },
