@@ -7,7 +7,7 @@ import SelectOneBuilder, { checkFields as selectOneCheck } from './SelectOneBuil
 const QuestionBuilder = (props) => {
   const { content, setForm, languages } = props;
   const { data, id, type } = content;
-
+    
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
 
   let elementEditor = null;

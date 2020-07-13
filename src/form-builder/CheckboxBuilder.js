@@ -19,7 +19,7 @@ const CheckboxBuilder = ({ id, data, setForm, language }) => {
   const questionRef = data.questions
     ? data.questions.find((question) => question.language === language)
     : null;
-  
+
   return (
     <Form>
       <Form.Row>
@@ -72,6 +72,7 @@ const CheckboxBuilder = ({ id, data, setForm, language }) => {
           <Form.Check
             type="checkbox"
             label="Is restricted?"
+            checked={(data.required && data.required.status) || false}
             onChange={(event) => {
               event.persist();
               setForm((prefForm) => prefForm.map((question) => {
@@ -90,7 +91,7 @@ const CheckboxBuilder = ({ id, data, setForm, language }) => {
 
                   return {
                     data: {
-                      required: { status: event.target.checked, value: required.value },
+                      required: { ...required, status: event.target.checked },
                       ...otherDataProps,
                     },
                     ...otherQuestionProps,

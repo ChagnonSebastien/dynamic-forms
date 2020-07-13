@@ -9,6 +9,10 @@ export const checkFields = (data, language) => {
     return false;
   }
 
+  if (data.answers.length === 0) {
+    return false;
+  }
+
   const questionRef = data.questions.find((question) => question.language === language);
   if (!questionRef || !questionRef.text){
     return false;
@@ -77,11 +81,12 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
           </InputGroup>
         </Col>
       </Form.Row>
-      <Form.Row>
-        <Col xs="auto">
+      <Form.Row className="mb-2">
+        <Col>
           <Form.Check
             type="checkbox"
             label="Is restricted?"
+            checked={(data.required && data.required.status) || false}
             onChange={(event) => {
               event.persist();
               setForm((prefForm) => prefForm.map((question) => {
@@ -91,7 +96,7 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
                   if (!required) {
                     return {
                       data: {
-                        required: { status: event.target.checked, value: [] },
+                        required: { status: event.target.checked, values: [] },
                         ...otherDataProps,
                       },
                       ...otherQuestionProps,
@@ -100,7 +105,7 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
 
                   return {
                     data: {
-                      required: { status: event.target.checked, value: required.value },
+                      required: { ...required, status: event.target.checked },
                       ...otherDataProps,
                     },
                     ...otherQuestionProps,
@@ -111,6 +116,45 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
             }}
           />
         </Col>
+        <Col xs="auto">
+          <Button
+            size="sm"
+            onClick={() => setForm((prefForm) => prefForm.map((question) => {
+              if (question.id === id) {
+                const { data, ...otherQuestionProps } = question;
+                const { answers, ...otherDataProps } = data;
+                if (!answers) {
+                  return {
+                    data: {
+                      answers: [{
+                        id: uuid(),
+                        content: [],
+                      }],
+                      ...otherDataProps,
+                    },
+                    ...otherQuestionProps,
+                  }
+                }
+
+                const newAnswers = answers.map((answer) => answer);
+                newAnswers.push({
+                  id: uuid(),
+                  content: [],
+                });
+                return {
+                  data: {
+                    answers: newAnswers,
+                    ...otherDataProps,
+                  },
+                  ...otherQuestionProps,
+                }
+              }
+              return question;
+            }))}
+          >
+            New Choice
+          </Button>
+        </Col>
       </Form.Row>
       {data.answers
         ? data.answers.map((answer, index) => {
@@ -119,11 +163,25 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
           return (
             <Form.Row key={answer.id}>
               <Col xs="auto">
-                <p>Valid Answer</p>
+                <Form.Check
+                  className="ml-3"
+                  type="checkbox"
+                  label="Valid Answer?"
+                  onChange={(event) => {
+                    event.persist();
+                    setForm((prefForm) => prefForm.map((question) => {
+                      if (question.id === id) {
+
+                      }
+                      return question;
+                    }));
+                  }}
+                />
               </Col>
               <Col>
                 <Form.Control
                   type="text"
+                  size="sm"
                   value={specificRef ? specificRef.text : ''}
                   placeholder="Option"
                   onChange={(event) => {
@@ -186,47 +244,6 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
             </Form.Row>
           )
         }) : null}
-      <Form.Row className="justify-content-md-end">
-        <Col xs="auto">
-          <Button
-            size="sm"
-            onClick={() => setForm((prefForm) => prefForm.map((question) => {
-              if (question.id === id) {
-                const { data, ...otherQuestionProps } = question;
-                const { answers, ...otherDataProps } = data;
-                if (!answers) {
-                  return {
-                    data: {
-                      answers: [{
-                        id: uuid(),
-                        content: [],
-                      }],
-                      ...otherDataProps,
-                    },
-                    ...otherQuestionProps,
-                  }
-                }
-
-                const newAnswers = answers.map((answer) => answer);
-                newAnswers.push({
-                  id: uuid(),
-                  content: [],
-                });
-                return {
-                  data: {
-                    answers: newAnswers,
-                    ...otherDataProps,
-                  },
-                  ...otherQuestionProps,
-                }
-              }
-              return question;
-            }))}
-          >
-            New Choice
-          </Button>
-        </Col>
-      </Form.Row>
     </Form>
   );
 };
