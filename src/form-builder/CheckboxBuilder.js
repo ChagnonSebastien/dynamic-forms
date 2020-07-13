@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form } from 'react-bootstrap';
+import { Form, InputGroup, Col } from 'react-bootstrap';
 
 export const checkFields = (data, language) => {
   if (!data || !data.questions) {
@@ -24,44 +24,117 @@ const CheckboxBuilder = ({ id, data, setForm, language }) => {
   
   return (
     <Form>
-      <Form.Group controlId="questionText">
-        <Form.Label>Question</Form.Label>
-        <Form.Control
-          type="text"
-          value={question}
-          onChange={(event) => {
-            event.persist();
-            setForm((prefForm) => prefForm.map((question) => {
-              if (question.id === id) {
-                const { data, ...otherQuestionProps } = question;
-                const { questions, ...otherDataProps } = data;
+      <Form.Row>
+        <Col>
+          <InputGroup className="mb-2">
+            <InputGroup.Prepend>
+              <InputGroup.Text>Question</InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="text"
+              value={question}
+              placeholder={`${language.toUpperCase()} question...`}
+              onChange={(event) => {
+                event.persist();
+                setForm((prefForm) => prefForm.map((question) => {
+                  if (question.id === id) {
+                    const { data, ...otherQuestionProps } = question;
+                    const { questions, ...otherDataProps } = data;
 
-                if (questionRef) {
+                    if (questionRef) {
+                      return {
+                        data: { 
+                          questions: questions.map((question) => (
+                            question.language === language
+                              ? { language, text: event.target.value }
+                              : question
+                          )),
+                          ...otherDataProps,
+                        },
+                        ...otherQuestionProps,
+                      };
+                    }
+
+                    const newQuestions = questions ? questions.map((question) => question) : [];
+                    newQuestions.push({ language, text: event.target.value });
+                    return {
+                      data: { questions: newQuestions, ...otherDataProps },
+                      ...otherQuestionProps,
+                    };
+                  }
+                  return question;
+                }));
+              }}
+            />
+          </InputGroup>
+        </Col>
+      </Form.Row>
+      <Form.Row>
+        <Col xs="auto">
+          <Form.Check
+            type="checkbox"
+            label="Is restricted?"
+            onChange={(event) => {
+              event.persist();
+              setForm((prefForm) => prefForm.map((question) => {
+                if (question.id === id) {
+                  const { data, ...otherQuestionProps } = question;
+                  const { required, ...otherDataProps } = data;
+                  if (!required) {
+                    return {
+                      data: {
+                        required: { status: event.target.checked, value: true },
+                        ...otherDataProps,
+                      },
+                      ...otherQuestionProps,
+                    }
+                  }
+
                   return {
-                    data: { 
-                      questions: questions.map((question) => (
-                        question.language === language
-                          ? { language, text: event.target.value }
-                          : question
-                      )),
+                    data: {
+                      required: { status: event.target.checked, value: required.value },
                       ...otherDataProps,
                     },
                     ...otherQuestionProps,
-                  };
+                  }
                 }
-
-                const newQuestions = questions ? questions.map((question) => question) : [];
-                newQuestions.push({ language, text: event.target.value });
-                return {
-                  data: { questions: newQuestions, ...otherDataProps },
-                  ...otherQuestionProps,
-                };
-              }
-              return question;
-            }));
-          }}
-        />
-      </Form.Group>
+                return question;
+              }));
+            }}
+          />
+        </Col>
+        {data.required && data.required.status
+          ? (
+            <Col>
+              <Form.Label>
+                Answer Must Be:
+              </Form.Label>
+              <Form.Control
+                as="select"
+                value={data.required.value}
+                onChange={(event) => {
+                  event.persist();
+                  setForm((prefForm) => prefForm.map((question) => {
+                    if (question.id === id) {
+                      const { data, ...otherQuestionProps } = question;
+                      return {
+                        data: {
+                          ...data,
+                          required: { status: true, value: event.target.value === 'true' },
+                        },
+                        ...otherQuestionProps,
+                      }
+                    }
+                    return question;
+                  }));
+                }}
+              >
+                <option value={true}>True</option>
+                <option value={false}>False</option>
+              </Form.Control>
+            </Col>
+          ) : null}
+      </Form.Row>
     </Form>
   );
 };
@@ -73,6 +146,10 @@ CheckboxBuilder.propTypes = {
     questions: PropTypes.arrayOf(PropTypes.shape({
       language: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
+    })),
+    restricted: PropTypes.arrayOf(PropTypes.shape({
+      status: PropTypes.bool.isRequired,
+      value: PropTypes.bool.isRequired,
     })),
   }).isRequired,
   setForm: PropTypes.func.isRequired,
