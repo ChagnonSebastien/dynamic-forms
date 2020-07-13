@@ -33,6 +33,7 @@ const FormBuilder = (props) => {
     <>
       {form.map((formElement, index) => (
         <QuestionBuilder
+          key={formElement.id}
           languages={languages}
           content={formElement}
           setForm={setForm}
