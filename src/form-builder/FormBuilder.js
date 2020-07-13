@@ -36,8 +36,6 @@ const FormBuilder = (props) => {
     setForm(formCopy);
   };
 
-  console.log(form);
-
   return (
     <>
       {form.map((formElement, index) => {
@@ -117,9 +115,7 @@ const FormBuilder = (props) => {
                       </Form.Row>
                     </Form>
                   </Card.Title>
-                  <Card.Text>
-                    {elementEditor}
-                  </Card.Text>
+                  {elementEditor}
                 </Card.Body>
               </Col>
             </Row>

@@ -53,13 +53,15 @@ const CheckboxBuilder = (props) => {
         <Col>
           {languages.map((language) => (
             <Badge
+              key={`${content.id}-${language}`}
               pill
               variant={checkFields(language) ? 'success' : 'danger'}
               style={{
                 border: language === selectedLanguage
                           ? '3px solid #666'
-                          : null,
+                          : '3px solid #FFF',
                 margin: '0 0.3rem',
+                float: 'right',
               }}
               onClick={() => setSelectedLanguage(language)}
             >
