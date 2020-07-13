@@ -16,7 +16,7 @@ const FormBuilder = (props) => {
         if (i === index) {
           newForm.push({
             id: uuid(),
-            type: "checkbox",
+            type: "select-one",
             data: {}
           })
         } else if (i < index) {

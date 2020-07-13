@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Badge, Col, Card, InputGroup } from 'react-bootstrap';
 import CheckboxBuilder, { checkFields as checkboxCheck } from './CheckboxBuilder';
+import SelectOneBuilder, { checkFields as selectOneCheck } from './SelectOneBuilder';
 
 const QuestionBuilder = (props) => {
   const { content, setForm, languages } = props;
@@ -25,7 +26,15 @@ const QuestionBuilder = (props) => {
       languageValidator=checkboxCheck;
       break;
     case 'select-one':
-      elementEditor = <>Select One Question</>
+      elementEditor = (
+        <SelectOneBuilder
+          id={id}
+          language={selectedLanguage}
+          data={data}
+          setForm={setForm}
+        />
+      )
+      languageValidator=selectOneCheck;
       break;
     case 'select-multi':
       elementEditor = <>Select Multiple Question</>
