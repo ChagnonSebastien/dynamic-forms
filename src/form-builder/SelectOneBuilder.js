@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, InputGroup, Col, Button } from 'react-bootstrap';
+import { FaTrash } from 'react-icons/fa';
 import { v4 as uuid } from 'uuid';
 
 export const checkFields = (data, language) => {
@@ -117,8 +118,8 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
           const specificRef = content.find((specific) => specific.language === language);
           return (
             <Form.Row key={answer.id}>
-              <Col>
-                <p>Choice</p>
+              <Col xs="auto">
+                <p>Valid Answer</p>
               </Col>
               <Col>
                 <Form.Control
@@ -162,8 +163,25 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
                   }}
                 />
               </Col>
-              <Col>
-
+              <Col xs="auto">
+                <FaTrash
+                  onClick={() => setForm((prevForm) => prevForm.map((question) => {
+                    if (question.id === id) {
+                      const { data, ...otherQuestionProps } = question;
+                      const { answers, ...otherDataProps } = data;
+                      const newAnswers = answers.map((answer) => answer);
+                      newAnswers.splice(index, 1);
+                      return {
+                        data: {
+                          answers: newAnswers,
+                          ...otherDataProps,
+                        },
+                        ...otherQuestionProps,
+                      }
+                    }
+                    return question;
+                  }))}
+                />
               </Col>
             </Form.Row>
           )
