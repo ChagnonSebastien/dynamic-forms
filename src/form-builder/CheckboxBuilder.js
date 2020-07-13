@@ -1,103 +1,83 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Form, Badge, Col } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
-const CheckboxBuilder = (props) => {
-  const { content, update, languages } = props;
-
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0])
-
-  const checkFields = (language) => {
-    if (!content.question) return false;
-
-    const specificQuestion = content.question.find((specificQuestion) => (
-      specificQuestion.language === language
-    ));
-
-    return specificQuestion && specificQuestion.text;
+export const checkFields = (data, language) => {
+  if (!data || !data.questions) {
+    return false;
   }
 
-  const getQuestion = (language) => {
-    if (!content.question) return '';
-
-    const specificQuestion = content.question.find((specificQuestion) => (
-      specificQuestion.language === language
-    ));
-    
-    if (!specificQuestion || !specificQuestion.text) return ''
-    return specificQuestion.text;
+  const questionRef = data.questions.find((question) => question.language === language);
+  if (!questionRef || !questionRef.text){
+    return false;
   }
 
-  const setQuestion = (text, language) => {
-    const contentCopy = JSON.parse(JSON.stringify(content));
-    if (!contentCopy.question) {
-      contentCopy.question = [];
-    }
+  return true;
+}
 
-    const specificQuestionIndex = content.question.findIndex((specificQuestion) => (
-      specificQuestion.language === language
-    ));
+const CheckboxBuilder = ({ id, data, setForm, language }) => {
+  const questionRef = data.questions
+    ? data.questions.find((question) => question.language === language)
+    : null;
 
-    if (specificQuestionIndex === -1) {
-      contentCopy.question.push({ language, text })
-    } else {
-      contentCopy.question[specificQuestionIndex].text = text;
-    }
-
-    update(contentCopy);
-  }
-
+  const question = questionRef ? questionRef.text : '';
+  
   return (
-    <>
-      <Row>
-        <Col>
-          {languages.map((language) => (
-            <Badge
-              key={`${content.id}-${language}`}
-              pill
-              variant={checkFields(language) ? 'success' : 'danger'}
-              style={{
-                border: language === selectedLanguage
-                          ? '3px solid #666'
-                          : '3px solid #FFF',
-                margin: '0 0.3rem',
-                float: 'right',
-              }}
-              onClick={() => setSelectedLanguage(language)}
-            >
-              {language}
-            </Badge>
-          ))}
-        </Col>
-      </Row>
-      <Form>
-        <Form.Group controlId="questionText">
-          <Form.Label>Question</Form.Label>
-          <Form.Control
-            type="text"
-            value={getQuestion(selectedLanguage)}
-            onChange={(event) => setQuestion(
-              event.target.value,
-              selectedLanguage
-            )}
-          />
-        </Form.Group>
-      </Form>
-    </>
-  )
+    <Form>
+      <Form.Group controlId="questionText">
+        <Form.Label>Question</Form.Label>
+        <Form.Control
+          type="text"
+          value={question}
+          onChange={(event) => {
+            event.persist();
+            setForm((prefForm) => prefForm.map((question) => {
+              if (question.id === id) {
+                const { data, ...otherQuestionProps } = question;
+                const { questions, ...otherDataProps } = data;
+
+                if (questionRef) {
+                  return {
+                    data: { 
+                      questions: questions.map((question) => (
+                        question.language === language
+                          ? { language, text: event.target.value }
+                          : question
+                      )),
+                      ...otherDataProps,
+                    },
+                    ...otherQuestionProps,
+                  };
+                }
+
+                const newQuestions = questions ? questions.map((question) => question) : [];
+                newQuestions.push({ language, text: event.target.value });
+                return {
+                  data: { questions: newQuestions, ...otherDataProps },
+                  ...otherQuestionProps,
+                };
+              }
+              return question;
+            }));
+          }}
+        />
+      </Form.Group>
+    </Form>
+  );
 };
 
 CheckboxBuilder.propTypes = {
-  content: PropTypes.shape({
-    type: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  language: PropTypes.string.isRequired,
+  data: PropTypes.shape({
     questions: PropTypes.arrayOf(PropTypes.shape({
       language: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
-    }))
+    })),
   }).isRequired,
-  update: PropTypes.func.isRequired,
-  languages: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  setForm: PropTypes.func.isRequired,
 };
+
+CheckboxBuilder.defaultProps = { data: { question: '' } };
 
 export default CheckboxBuilder;
