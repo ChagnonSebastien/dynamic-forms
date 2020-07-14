@@ -5,6 +5,7 @@ import CheckboxBuilder, { checkFields as checkboxCheck } from './CheckboxBuilder
 import SelectOneBuilder, { checkFields as selectOneCheck } from './SelectOneBuilder';
 import { FaArrowUp, FaTrash, FaArrowDown } from 'react-icons/fa';
 import CheckboxQuestion from '../form-renderer/CheckBoxQuestion';
+import SelectOneQuestion from '../form-renderer/SelectOneQuestion';
 
 const QuestionBuilder = (props) => {
   const { content, setForm, languages, index, first, last, preview } = props;
@@ -48,6 +49,16 @@ const QuestionBuilder = (props) => {
         />
       )
       languageValidator=selectOneCheck;
+      if (preview) {
+        elementPreview = (
+          <SelectOneQuestion
+            id={id}
+            language={selectedLanguage}
+            data={data}
+            setAnswers={() => console.log('setAnswers')}
+          />
+        )
+      }
       break;
     case 'select-multi':
       elementEditor = <>Select Multiple Question</>

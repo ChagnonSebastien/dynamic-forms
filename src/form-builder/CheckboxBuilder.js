@@ -154,6 +154,6 @@ CheckboxBuilder.propTypes = {
   setForm: PropTypes.func.isRequired,
 };
 
-CheckboxBuilder.defaultProps = { data: { question: '' } };
+CheckboxBuilder.defaultProps = {};
 
 export default CheckboxBuilder;

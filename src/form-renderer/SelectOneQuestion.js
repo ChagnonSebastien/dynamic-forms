@@ -2,24 +2,36 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Col } from 'react-bootstrap';
 
-const CheckboxQuestion = (props) => {
+const SelectOneQuestion = (props) => {
   const { language, data } = props;
   const labelRef = data.questions ? data.questions.find((specific) => specific.language === language) : undefined;
   const label = labelRef ? labelRef.text : '';
 
+  const answers = data.answers ? data.answers : [];
+
   return (
     <Form.Row>
-      <Col>
-        <Form.Check 
-          type="checkbox"
-          label={label}
-        />
+      <Col xs="auto">
+        <Form.Group>
+          <Form.Label>
+            {label}
+          </Form.Label>
+          <Form.Control
+            as="select"
+          >
+            {answers.map((answer) => {
+              const answerLabelRef = answer.content ? answer.content.find((specific) => specific.language === language) : undefined;
+              const answerLabel = answerLabelRef ? answerLabelRef.text : '';
+              return <option value={answer.id}>{answerLabel}</option>
+            })}
+          </Form.Control>
+        </Form.Group>
       </Col>
     </Form.Row>
   );
 };
 
-CheckboxQuestion.propTypes = {
+SelectOneQuestion.propTypes = {
   id: PropTypes.string.isRequired,
   language: PropTypes.string.isRequired,
   data: PropTypes.shape({
@@ -35,6 +47,6 @@ CheckboxQuestion.propTypes = {
   setAnswers: PropTypes.func.isRequired,
 };
 
-CheckboxQuestion.defaultProps = {};
+SelectOneQuestion.defaultProps = {};
 
-export default CheckboxQuestion;
+export default SelectOneQuestion;

@@ -282,6 +282,6 @@ SelectOneBuilder.propTypes = {
   setForm: PropTypes.func.isRequired,
 };
 
-SelectOneBuilder.defaultProps = { data: { question: '' } };
+SelectOneBuilder.defaultProps = {};
 
 export default SelectOneBuilder;
