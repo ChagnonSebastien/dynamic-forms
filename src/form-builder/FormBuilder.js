@@ -37,6 +37,9 @@ const FormBuilder = (props) => {
           languages={languages}
           content={formElement}
           setForm={setForm}
+          index={index}
+          first={index === 0}
+          last={index === form.length - 1}
         />
       ))}
 

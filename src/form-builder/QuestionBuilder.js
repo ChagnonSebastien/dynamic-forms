@@ -6,7 +6,7 @@ import SelectOneBuilder, { checkFields as selectOneCheck } from './SelectOneBuil
 import { FaArrowUp, FaTrash, FaArrowDown } from 'react-icons/fa';
 
 const QuestionBuilder = (props) => {
-  const { content, setForm, languages } = props;
+  const { content, setForm, languages, index, first, last } = props;
   const { data, id, type } = content;
     
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
@@ -62,9 +62,43 @@ const QuestionBuilder = (props) => {
             margin: '0 0 0 1rem',
           }}
         >
-          <FaArrowUp />
-          <FaTrash />
-          <FaArrowDown />
+          <div>
+            {!first
+              ? (
+                <FaArrowUp
+                  onClick={() => setForm((prevForm) => prevForm.map((question, i, questions) => {
+                    if (index === i) {
+                      return questions[index - 1];
+                    }
+                    if (index - 1 === i) {
+                      return questions[index];
+                    }
+
+                    return question;
+                  }))}
+                />
+              ) : null}
+          </div>
+          <div>
+            <FaTrash />
+          </div>
+          <div>
+            {!last
+              ? (
+                <FaArrowDown
+                  onClick={() => setForm((prevForm) => prevForm.map((question, i, questions) => {
+                    if (index === i) {
+                      return questions[index + 1];
+                    }
+                    if (index + 1 === i) {
+                      return questions[index];
+                    }
+
+                    return question;
+                  }))}
+                />
+              ) : null}
+          </div>
         </Col>
         <Col>
           <Card.Body>
@@ -149,6 +183,9 @@ QuestionBuilder.propTypes = {
   }).isRequired,
   setForm: PropTypes.func.isRequired,
   languages: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  index: PropTypes.number.isRequired,
+  first: PropTypes.bool.isRequired,
+  last: PropTypes.bool.isRequired,
 };
 
 export default QuestionBuilder;
