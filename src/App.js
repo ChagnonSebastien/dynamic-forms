@@ -3,8 +3,12 @@ import { Container, Row, Col, Jumbotron } from 'react-bootstrap';
 import FormBuilder from './form-builder/FormBuilder';
 
 const App = () => {
-  const [formContent, setFormContent] = useState();
-  const [formAnswers, setFormAnswers] = useState();
+  const [form, setForm] = useState([]);
+
+  const updateForm = (updateFunction) => {
+    console.table(updateFunction(form))
+    setForm(updateFunction)
+  }
 
   return (
     <Container fluid>
@@ -12,8 +16,8 @@ const App = () => {
         <Col>
           <Jumbotron style={{ background: '#ddd' }}>
             <FormBuilder
-              initialForm={{}}
-              submitForm={(form) => setFormContent(form)}
+              form={form}
+              setForm={updateForm}
               languages={['fr', 'en', 'es']}
             />
           </Jumbotron>

@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Row } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import {v4 as uuid} from 'uuid';
 import QuestionBuilder from './QuestionBuilder';
 
 const FormBuilder = (props) => {
-  const { submitForm, languages } = props;
-
-  const [form, setForm] = useState([]);
+  const { form, setForm, languages } = props;
 
   const addQuestion = (index) => setForm(
     (prevForm) => {
@@ -47,18 +45,13 @@ const FormBuilder = (props) => {
       <Button onClick={() => addQuestion(form.length)}>
         Insert New Question
       </Button>
-      <Row className="justify-content-center">
-        <Button onClick={() => submitForm(form)}>
-          Submit Form
-        </Button>
-      </Row>
     </>
   )
 };
 
 FormBuilder.propTypes = {
-  initialForm: PropTypes.shape({}),
-  submitForm: PropTypes.func.isRequired,
+  form: PropTypes.shape({}),
+  setForm: PropTypes.func.isRequired,
   languages: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 };
 
