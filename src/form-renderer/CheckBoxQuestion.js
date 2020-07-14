@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Form, Col } from 'react-bootstrap';
 
 const CheckboxQuestion = (props) => {
-  const { language, data } = props;
+  const { language, data, answer, setAnswers, id } = props;
   const labelRef = data.questions ? data.questions.find((specific) => specific.language === language) : undefined;
   const label = labelRef ? labelRef.text : '';
 
@@ -13,6 +13,18 @@ const CheckboxQuestion = (props) => {
         <Form.Check 
           type="checkbox"
           label={label}
+          checked={(answer && answer.value) || false}
+          onChange={(event) => {
+            event.persist();
+            setAnswers((prevAnswers) => {
+              const newAnswers = prevAnswers.filter((a) => a.id !== id);
+              newAnswers.push({
+                id,
+                value: event.target.checked,
+              });
+              return newAnswers;
+            })
+          }}
         />
       </Col>
     </Form.Row>
@@ -33,6 +45,10 @@ CheckboxQuestion.propTypes = {
     })),
   }).isRequired,
   setAnswers: PropTypes.func.isRequired,
+  answer: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    value: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 CheckboxQuestion.defaultProps = {};

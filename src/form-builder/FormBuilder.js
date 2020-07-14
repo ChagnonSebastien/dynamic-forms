@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import {v4 as uuid} from 'uuid';
@@ -6,6 +6,8 @@ import QuestionBuilder from './QuestionBuilder';
 
 const FormBuilder = (props) => {
   const { form, setForm, languages, preview } = props;
+
+  const [testAnsewers, setTestAnswers] = useState([]);
 
   const addQuestion = (index) => setForm(
     (prevForm) => {
@@ -39,6 +41,8 @@ const FormBuilder = (props) => {
           first={index === 0}
           last={index === form.length - 1}
           preview={preview}
+          answer={testAnsewers.find((answer) => answer.id === formElement.id)}
+          setAnswers={setTestAnswers}
         />
       ))}
 

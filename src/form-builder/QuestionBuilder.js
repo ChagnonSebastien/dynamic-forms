@@ -8,7 +8,7 @@ import CheckboxQuestion from '../form-renderer/CheckBoxQuestion';
 import SelectOneQuestion from '../form-renderer/SelectOneQuestion';
 
 const QuestionBuilder = (props) => {
-  const { content, setForm, languages, index, first, last, preview } = props;
+  const { content, setForm, languages, index, first, last, preview, answer, setAnswers } = props;
   const { data, id, type } = content;
 
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
@@ -34,7 +34,8 @@ const QuestionBuilder = (props) => {
             id={id}
             language={selectedLanguage}
             data={data}
-            setAnswers={() => console.log('setAnswers')}
+            answer={answer}
+            setAnswers={setAnswers}
           />
         )
       }
@@ -55,7 +56,8 @@ const QuestionBuilder = (props) => {
             id={id}
             language={selectedLanguage}
             data={data}
-            setAnswers={() => console.log('setAnswers')}
+            answer={answer}
+            setAnswers={setAnswers}
           />
         )
       }
@@ -229,6 +231,16 @@ QuestionBuilder.propTypes = {
   first: PropTypes.bool.isRequired,
   last: PropTypes.bool.isRequired,
   preview: PropTypes.bool.isRequired,
+  answer: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    value: PropTypes.oneOf([
+      PropTypes.bool,
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.arrayOf(PropTypes.string)
+    ])
+  }).isRequired,
+  setAnswers: PropTypes.func.isRequired,
 };
 
 export default QuestionBuilder;
