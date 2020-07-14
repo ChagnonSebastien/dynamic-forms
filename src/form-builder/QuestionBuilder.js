@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Badge, Col, Card, InputGroup } from 'react-bootstrap';
+import { Form, Badge, Col, Card, InputGroup, Row } from 'react-bootstrap';
 import CheckboxBuilder, { checkFields as checkboxCheck } from './CheckboxBuilder';
 import SelectOneBuilder, { checkFields as selectOneCheck } from './SelectOneBuilder';
+import { FaArrowUp, FaTrash, FaArrowDown } from 'react-icons/fa';
 
 const QuestionBuilder = (props) => {
   const { content, setForm, languages } = props;
@@ -51,69 +52,86 @@ const QuestionBuilder = (props) => {
 
   return (
     <Card>
-      <Card.Body>
-        <Form>
-          <Form.Row>
-            <Col>
-              <InputGroup>
-                <Form.Control
-                  as="select"
-                  style={{ margin: '0 0 0 0' }}
-                  onChange={(event) => {
-                    event.persist();
-                    setForm((prefForm) => prefForm.map((question) => {
-                      if (question.id === id) {
-                        const { type, ...otherProps } = question;
-                        return { type: event.target.value, ...otherProps };
-                      }
-                      return question;
-                    }));
-                  }}
-                  value={type}
-                >
-                  <option value="checkbox">
-                    Checkbox Question
-                  </option>
-                  <option value="select-one">
-                    Select One Question
-                  </option>
-                  <option value="select-multi">
-                    Select Multiple Question
-                  </option>
-                  <option value="short-string">
-                    Short Answer Question
-                  </option>
-                  <option value="long-string">
-                    Text Question
-                  </option>
-                </Form.Control>
-                <InputGroup.Append>
-                  <InputGroup.Text>
-                    {languages.map((language) => (
-                      <Badge
-                        key={`${id}-${language}`}
-                        className="mx-1"
-                        pill
-                        variant={languageValidator(data, language) ? 'success' : 'danger'}
-                        style={{
-                        border: language === selectedLanguage
-                          ? '3px solid #000'
-                          : null,
-                        }}
-                        onClick={() => setSelectedLanguage(language)}
-                      >
-                        {language}
-                      </Badge>
-                    ))}
-                  </InputGroup.Text>
-                </InputGroup.Append>
-              </InputGroup>
-            </Col>
-          </Form.Row>
-        </Form>
-        <br />
-        {elementEditor}
-      </Card.Body>
+      <Row noGutters>
+        <Col
+          xs="auto"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-evenly',
+            flexDirection: 'column',
+            margin: '0 0 0 1rem',
+          }}
+        >
+          <FaArrowUp />
+          <FaTrash />
+          <FaArrowDown />
+        </Col>
+        <Col>
+          <Card.Body>
+            <Form>
+              <Form.Row>
+                <Col>
+                  <InputGroup>
+                    <Form.Control
+                      as="select"
+                      style={{ margin: '0 0 0 0' }}
+                      onChange={(event) => {
+                        event.persist();
+                        setForm((prefForm) => prefForm.map((question) => {
+                          if (question.id === id) {
+                            const { type, ...otherProps } = question;
+                            return { type: event.target.value, ...otherProps };
+                          }
+                          return question;
+                        }));
+                      }}
+                      value={type}
+                    >
+                      <option value="checkbox">
+                        Checkbox Question
+                      </option>
+                      <option value="select-one">
+                        Select One Question
+                      </option>
+                      <option value="select-multi">
+                        Select Multiple Question
+                      </option>
+                      <option value="short-string">
+                        Short Answer Question
+                      </option>
+                      <option value="long-string">
+                        Text Question
+                      </option>
+                    </Form.Control>
+                    <InputGroup.Append>
+                      <InputGroup.Text>
+                        {languages.map((language) => (
+                          <Badge
+                            key={`${id}-${language}`}
+                            className="mx-1"
+                            pill
+                            variant={languageValidator(data, language) ? 'success' : 'danger'}
+                            style={{
+                            border: language === selectedLanguage
+                              ? '3px solid #000'
+                              : null,
+                            }}
+                            onClick={() => setSelectedLanguage(language)}
+                          >
+                            {language}
+                          </Badge>
+                        ))}
+                      </InputGroup.Text>
+                    </InputGroup.Append>
+                  </InputGroup>
+                </Col>
+              </Form.Row>
+            </Form>
+            <br />
+            {elementEditor}
+          </Card.Body>
+        </Col>
+      </Row>
     </Card>
   )
 };
