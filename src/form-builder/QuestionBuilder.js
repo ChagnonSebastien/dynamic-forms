@@ -8,7 +8,7 @@ import { FaArrowUp, FaTrash, FaArrowDown } from 'react-icons/fa';
 const QuestionBuilder = (props) => {
   const { content, setForm, languages, index, first, last } = props;
   const { data, id, type } = content;
-    
+
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
 
   let elementEditor = null;
@@ -80,7 +80,9 @@ const QuestionBuilder = (props) => {
               ) : null}
           </div>
           <div>
-            <FaTrash />
+            <FaTrash
+              onClick={() => setForm((prevForm) => prevForm.filter((question, i) => i !== index))}
+            />
           </div>
           <div>
             {!last
