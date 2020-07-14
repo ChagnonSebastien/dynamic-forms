@@ -5,7 +5,7 @@ import {v4 as uuid} from 'uuid';
 import QuestionBuilder from './QuestionBuilder';
 
 const FormBuilder = (props) => {
-  const { form, setForm, languages } = props;
+  const { form, setForm, languages, preview } = props;
 
   const addQuestion = (index) => setForm(
     (prevForm) => {
@@ -14,7 +14,7 @@ const FormBuilder = (props) => {
         if (i === index) {
           newForm.push({
             id: uuid(),
-            type: "select-one",
+            type: "checkbox",
             data: {}
           })
         } else if (i < index) {
@@ -38,6 +38,7 @@ const FormBuilder = (props) => {
           index={index}
           first={index === 0}
           last={index === form.length - 1}
+          preview={preview}
         />
       ))}
 
@@ -50,11 +51,21 @@ const FormBuilder = (props) => {
 };
 
 FormBuilder.propTypes = {
-  form: PropTypes.shape({}),
+  form: PropTypes.arrayOf(PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    data: PropTypes.shape({
+      questions: PropTypes.arrayOf(PropTypes.shape({
+        language: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+      })),
+    })
+  })),
   setForm: PropTypes.func.isRequired,
   languages: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  preview: PropTypes.bool,
 };
 
-FormBuilder.defaultProps = { initialForm: {} };
+FormBuilder.defaultProps = { preview: false };
 
 export default FormBuilder;

@@ -19,12 +19,8 @@ const App = () => {
               form={form}
               setForm={updateForm}
               languages={['fr', 'en', 'es']}
+              preview
             />
-          </Jumbotron>
-        </Col>
-        <Col >
-          <Jumbotron style={{ background: '#ddd' }}>
-            Form
           </Jumbotron>
         </Col>
       </Row>
