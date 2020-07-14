@@ -167,11 +167,29 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
                   className="ml-3"
                   type="checkbox"
                   label="Valid Answer?"
+                  checked={(data.required && data.required.status && data.required.values && data.required.values.includes(answer.id)) || false}
+                  disabled={!((data.required && data.required.status) || false)}
                   onChange={(event) => {
                     event.persist();
                     setForm((prefForm) => prefForm.map((question) => {
                       if (question.id === id) {
+                        const { data, ...otherQuestionProps } = question;
+                        const { required, ...otherDataProps } = data;
+                        if (!required) {
+                          return question;
+                        }
 
+                        const newValues = required.values ? required.values.filter((value) => value !== answer.id) : [];
+                        if (event.target.checked) {
+                          newValues.push(answer.id);
+                        }
+                        return {
+                          data: {
+                            required: { ...required, values: newValues },
+                            ...otherDataProps,
+                          },
+                          ...otherQuestionProps,
+                        };
                       }
                       return question;
                     }));
