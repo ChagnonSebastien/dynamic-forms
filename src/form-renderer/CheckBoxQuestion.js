@@ -13,7 +13,7 @@ const CheckboxQuestion = (props) => {
         <Form.Check 
           type="checkbox"
           label={label}
-          checked={(answer && answer.value) || false}
+          checked={answer.value || false}
           onChange={(event) => {
             event.persist();
             setAnswers((prevAnswers) => {
@@ -46,11 +46,10 @@ CheckboxQuestion.propTypes = {
   }).isRequired,
   setAnswers: PropTypes.func.isRequired,
   answer: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    value: PropTypes.bool.isRequired,
-  }).isRequired,
+    value: PropTypes.bool,
+  }),
 };
 
-CheckboxQuestion.defaultProps = {};
+CheckboxQuestion.defaultProps = { answer: {} };
 
 export default CheckboxQuestion;

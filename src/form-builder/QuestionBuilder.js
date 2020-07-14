@@ -232,15 +232,16 @@ QuestionBuilder.propTypes = {
   last: PropTypes.bool.isRequired,
   preview: PropTypes.bool.isRequired,
   answer: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    value: PropTypes.oneOf([
+    value: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.string,
       PropTypes.number,
       PropTypes.arrayOf(PropTypes.string)
     ])
-  }).isRequired,
+  }),
   setAnswers: PropTypes.func.isRequired,
 };
+
+QuestionBuilder.defaultProps = { answer: undefined };
 
 export default QuestionBuilder;
