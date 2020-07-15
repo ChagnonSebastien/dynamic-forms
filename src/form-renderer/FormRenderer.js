@@ -31,6 +31,7 @@ const FormRenderer = (props) => {
                 id={id}
                 language={language}
                 data={data}
+                answer={answers.find((answer) => answer.id === id)}
                 setAnswers={setAnswers}
               />
             );

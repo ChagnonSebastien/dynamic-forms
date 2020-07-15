@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import { Button, Row, Col, Badge, Jumbotron } from 'react-bootstrap';
 import {v4 as uuid} from 'uuid';
 import QuestionBuilder from './QuestionBuilder';
 
@@ -8,6 +8,7 @@ const FormBuilder = (props) => {
   const { form, setForm, languages, preview } = props;
 
   const [testAnsewers, setTestAnswers] = useState([]);
+  const [previewLanguage, setPreviewLanguage] = useState(languages[0]);
 
   const addQuestion = (index) => setForm(
     (prevForm) => {
@@ -30,7 +31,66 @@ const FormBuilder = (props) => {
   );
 
   return (
-    <>
+    <Jumbotron style={{ background: '#ddd', position: 'relative' }}>
+      {preview && form.length > 0
+        ? (
+          <div
+            style={{
+              position: 'absolute',
+              right: '0',
+              top: '1rem',
+              bottom: '1rem',
+              display: 'flex',
+              flexFlow: 'column',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <div
+              style={{
+                position:'sticky',
+                bottom: '1rem',
+                zIndex: 100,
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: '#FFF',
+                  padding: '1rem',
+                  borderRadius: '10px 0 0 10px',
+                  borderWidth: '1px 0 1px 1px',
+                  borderColor: '#999',
+                  borderStyle: 'solid',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <p>Preview Language</p>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                  }}
+                >
+                  {languages.map((language) => (
+                    <Badge
+                      key={`preview-${language}`}
+                      className="mx-1"
+                      pill
+                      variant={language === previewLanguage
+                        ? 'primary'
+                        : 'secondary'}
+                      onClick={() => setPreviewLanguage(language)}
+                    >
+                      {language}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
       {form.map((formElement, index) => (
         <QuestionBuilder
           key={formElement.id}
@@ -41,16 +101,21 @@ const FormBuilder = (props) => {
           first={index === 0}
           last={index === form.length - 1}
           preview={preview}
+          previewLanguage={previewLanguage}
           answer={testAnsewers.find((answer) => answer.id === formElement.id)}
           setAnswers={setTestAnswers}
         />
       ))}
 
       <br />
-      <Button onClick={() => addQuestion(form.length)}>
-        Insert New Question
-      </Button>
-    </>
+      <Row className="justify-content-center">
+        <Col xs="auto">
+          <Button onClick={() => addQuestion(form.length)}>
+            Insert New Question
+          </Button>
+        </Col>
+      </Row>
+    </Jumbotron>
   )
 };
 

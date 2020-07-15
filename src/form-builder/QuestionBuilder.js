@@ -8,7 +8,7 @@ import CheckboxQuestion from '../form-renderer/CheckBoxQuestion';
 import SelectOneQuestion from '../form-renderer/SelectOneQuestion';
 
 const QuestionBuilder = (props) => {
-  const { content, setForm, languages, index, first, last, preview, answer, setAnswers } = props;
+  const { content, setForm, languages, index, first, last, preview, previewLanguage, answer, setAnswers } = props;
   const { data, id, type } = content;
 
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
@@ -17,49 +17,22 @@ const QuestionBuilder = (props) => {
   let elementPreview = null;
   let languageValidator = () => true;
 
+  const builderProps = { id, language: selectedLanguage, data, setForm };
+  const previewProps = preview ? { id, language: previewLanguage, data, answer, setAnswers } : undefined;
+
   switch (type) {
     case 'checkbox':
-      elementEditor = (
-        <CheckboxBuilder
-          id={id}
-          language={selectedLanguage}
-          data={data}
-          setForm={setForm}
-        />
-      );
+      elementEditor = <CheckboxBuilder {...builderProps} />;
       languageValidator=checkboxCheck;
       if (preview) {
-        elementPreview = (
-          <CheckboxQuestion
-            id={id}
-            language={selectedLanguage}
-            data={data}
-            answer={answer}
-            setAnswers={setAnswers}
-          />
-        )
+        elementPreview = <CheckboxQuestion {...previewProps} />;
       }
       break;
     case 'select-one':
-      elementEditor = (
-        <SelectOneBuilder
-          id={id}
-          language={selectedLanguage}
-          data={data}
-          setForm={setForm}
-        />
-      )
+      elementEditor = <SelectOneBuilder {...builderProps} />;
       languageValidator=selectOneCheck;
       if (preview) {
-        elementPreview = (
-          <SelectOneQuestion
-            id={id}
-            language={selectedLanguage}
-            data={data}
-            answer={answer}
-            setAnswers={setAnswers}
-          />
-        )
+        elementPreview = <SelectOneQuestion {...previewProps} />;
       }
       break;
     case 'select-multi':
@@ -231,6 +204,7 @@ QuestionBuilder.propTypes = {
   first: PropTypes.bool.isRequired,
   last: PropTypes.bool.isRequired,
   preview: PropTypes.bool.isRequired,
+  previewLanguage: PropTypes.string,
   answer: PropTypes.shape({
     value: PropTypes.oneOfType([
       PropTypes.bool,
@@ -242,6 +216,9 @@ QuestionBuilder.propTypes = {
   setAnswers: PropTypes.func.isRequired,
 };
 
-QuestionBuilder.defaultProps = { answer: undefined };
+QuestionBuilder.defaultProps = {
+  answer: undefined,
+  previewLanguage: 'fr',
+};
 
 export default QuestionBuilder;
