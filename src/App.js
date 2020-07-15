@@ -7,7 +7,7 @@ const App = () => {
   const [form, setForm] = useState([
     {id: "5421cb1e-8cf7-4ed6-86b1-a2ae99b04e20", type: "checkbox", data: {}},
     {id: "5421cb1e-8cf7-4ed6-86b1-a2ae99b04e21", type: "select-one", data: {}},
-    {id: "5421cb1e-8cf7-4ed6-86b1-a2ae99b04e22", type: "checkbox", data: {}},
+    {id: "5421cb1e-8cf7-4ed6-86b1-a2ae99b04e22", type: "select-at-least-one", data: {}},
     {id: "5421cb1e-8cf7-4ed6-86b1-a2ae99b04e23", type: "checkbox", data: {}},
     {id: "5421cb1e-8cf7-4ed6-86b1-a2ae99b04e24", type: "checkbox", data: {}},
     {id: "5421cb1e-8cf7-4ed6-86b1-a2ae99b04e25", type: "checkbox", data: {}},

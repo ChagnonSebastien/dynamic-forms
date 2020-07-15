@@ -35,7 +35,7 @@ const FormRenderer = (props) => {
                 setAnswers={setAnswers}
               />
             );
-          case 'select-multi':
+          case 'select-at-least-one':
             return <>Select Multiple Question</>;
           case 'short-string':
             return <>Short Answer Question</>;

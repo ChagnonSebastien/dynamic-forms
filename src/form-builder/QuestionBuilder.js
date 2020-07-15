@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Form, Badge, Col, Card, InputGroup, Row } from 'react-bootstrap';
 import CheckboxBuilder, { checkFields as checkboxCheck } from './CheckboxBuilder';
 import SelectOneBuilder, { checkFields as selectOneCheck } from './SelectOneBuilder';
+import SelectAtLeastOneBuilder, { checkFields as selectAtLeastOneCheck } from './SelectAtLeastOneBuilder';
 import { FaArrowUp, FaTrash, FaArrowDown } from 'react-icons/fa';
 import CheckboxQuestion from '../form-renderer/CheckBoxQuestion';
 import SelectOneQuestion from '../form-renderer/SelectOneQuestion';
@@ -35,8 +36,12 @@ const QuestionBuilder = (props) => {
         elementPreview = <SelectOneQuestion {...previewProps} />;
       }
       break;
-    case 'select-multi':
-      elementEditor = <>Select Multiple Question</>
+    case 'select-at-least-one':
+      elementEditor = <SelectAtLeastOneBuilder {...builderProps} />;
+      languageValidator=selectAtLeastOneCheck;
+      if (preview) {
+        elementPreview = null
+      }
       break;
     case 'short-string':
       elementEditor = <>Short Answer Question</>
@@ -129,8 +134,8 @@ const QuestionBuilder = (props) => {
                           <option value="select-one">
                             Select One Question
                           </option>
-                          <option value="select-multi">
-                            Select Multiple Question
+                          <option value="select-at-least-one">
+                            Select At Least One Question
                           </option>
                           <option value="short-string">
                             Short Answer Question
