@@ -18,7 +18,7 @@ const SelectOneQuestion = (props) => {
           </Form.Label>
           <Form.Control
             as="select"
-            value={answer.value || 'undefined-selection'}
+            value={(answer && answer.value) || 'undefined-selection'}
             onChange={(event) => {
               event.persist();
               setAnswers((prevAnswers) => {
@@ -34,10 +34,10 @@ const SelectOneQuestion = (props) => {
             }}
           >
             <option value="undefined-selection"></option>
-            {answers.map((answer) => {
-              const answerLabelRef = answer.content ? answer.content.find((specific) => specific.language === language) : undefined;
+            {answers.map((a) => {
+              const answerLabelRef = a.content ? a.content.find((specific) => specific.language === language) : undefined;
               const answerLabel = answerLabelRef ? answerLabelRef.text : '';
-              return <option key={answer.id} value={answer.id}>{answerLabel}</option>
+              return <option key={a.id} value={a.id}>{answerLabel}</option>
             })}
           </Form.Control>
         </Form.Group>
@@ -54,10 +54,17 @@ SelectOneQuestion.propTypes = {
       language: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
     })),
-    restricted: PropTypes.arrayOf(PropTypes.shape({
-      status: PropTypes.bool.isRequired,
-      value: PropTypes.bool.isRequired,
+    answers: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      content: PropTypes.arrayOf(PropTypes.shape({
+        language: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+      })).isRequired,
     })),
+    required: PropTypes.shape({
+      status: PropTypes.bool.isRequired,
+      values: PropTypes.arrayOf(PropTypes.string).isRequired,
+    }),
   }).isRequired,
   setAnswers: PropTypes.func.isRequired,
   answer: PropTypes.shape({
@@ -65,6 +72,6 @@ SelectOneQuestion.propTypes = {
   }),
 };
 
-SelectOneQuestion.defaultProps = { answer: {} };
+SelectOneQuestion.defaultProps = { answer: undefined };
 
 export default SelectOneQuestion;

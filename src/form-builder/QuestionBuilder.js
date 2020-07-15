@@ -201,6 +201,18 @@ QuestionBuilder.propTypes = {
         language: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
       })),
+      answers: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        content: PropTypes.arrayOf(PropTypes.shape({
+          language: PropTypes.string.isRequired,
+          text: PropTypes.string.isRequired,
+        })).isRequired,
+      })),
+      required: PropTypes.shape({
+        status: PropTypes.bool.isRequired,
+        value: PropTypes.bool,
+        values: PropTypes.arrayOf(PropTypes.string),
+      }),
     }).isRequired,
   }).isRequired,
   setForm: PropTypes.func.isRequired,
@@ -208,22 +220,26 @@ QuestionBuilder.propTypes = {
   index: PropTypes.number.isRequired,
   first: PropTypes.bool.isRequired,
   last: PropTypes.bool.isRequired,
-  preview: PropTypes.bool.isRequired,
+  preview: PropTypes.bool,
   previewLanguage: PropTypes.string,
   answer: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.string,
       PropTypes.number,
       PropTypes.arrayOf(PropTypes.string)
-    ])
+    ]),
   }),
-  setAnswers: PropTypes.func.isRequired,
+  setAnswers: PropTypes.func,
 };
 
 QuestionBuilder.defaultProps = {
+  preview: false,
   answer: undefined,
   previewLanguage: 'fr',
+  setAnswer: () => {},
+
 };
 
 export default QuestionBuilder;

@@ -146,10 +146,10 @@ CheckboxBuilder.propTypes = {
       language: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
     })),
-    restricted: PropTypes.arrayOf(PropTypes.shape({
+    required: PropTypes.shape({
       status: PropTypes.bool.isRequired,
       value: PropTypes.bool.isRequired,
-    })),
+    }),
   }).isRequired,
   setForm: PropTypes.func.isRequired,
 };

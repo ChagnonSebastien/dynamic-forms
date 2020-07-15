@@ -274,10 +274,17 @@ SelectOneBuilder.propTypes = {
       language: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
     })),
-    restricted: PropTypes.arrayOf(PropTypes.shape({
-      status: PropTypes.bool.isRequired,
-      value: PropTypes.bool.isRequired,
+    answers: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      content: PropTypes.arrayOf(PropTypes.shape({
+        language: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+      })).isRequired,
     })),
+    required: PropTypes.shape({
+      status: PropTypes.bool.isRequired,
+      values: PropTypes.arrayOf(PropTypes.string).isRequired,
+    }),
   }).isRequired,
   setForm: PropTypes.func.isRequired,
 };

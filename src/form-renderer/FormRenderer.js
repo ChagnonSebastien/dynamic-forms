@@ -62,17 +62,27 @@ FormRenderer.propTypes = {
         language: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
       })),
+      answers: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        content: PropTypes.arrayOf(PropTypes.shape({
+          language: PropTypes.string.isRequired,
+          text: PropTypes.string.isRequired,
+        })).isRequired,
+      })),
+      required: PropTypes.shape({
+        status: PropTypes.bool.isRequired,
+        value: PropTypes.bool,
+        values: PropTypes.arrayOf(PropTypes.string),
+      }),
     })
   })),
   answers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    value: PropTypes.oneOf([
-      PropTypes.bool,
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.arrayOf(PropTypes.string)
-    ])
-  })).isRequired,
+    content: PropTypes.arrayOf(PropTypes.shape({
+      language: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+    })).isRequired,
+  })),
   setAnswers: PropTypes.func.isRequired,
   language: PropTypes.string.isRequired,
   submit: PropTypes.func.isRequired,

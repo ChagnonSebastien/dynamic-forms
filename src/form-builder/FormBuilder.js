@@ -128,6 +128,18 @@ FormBuilder.propTypes = {
         language: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
       })),
+      answers: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        content: PropTypes.arrayOf(PropTypes.shape({
+          language: PropTypes.string.isRequired,
+          text: PropTypes.string.isRequired,
+        })).isRequired,
+      })),
+      required: PropTypes.shape({
+        status: PropTypes.bool.isRequired,
+        value: PropTypes.bool,
+        values: PropTypes.arrayOf(PropTypes.string),
+      }),
     })
   })),
   setForm: PropTypes.func.isRequired,
