@@ -56,8 +56,9 @@ const ShortTextBuilder = ({ id, data, setData, language }) => {
             />
           </InputGroup>
         </Col>
-      </Form.Row><Form.Row>
-        <Col xs="auto">
+      </Form.Row>
+      <Form.Row>
+        <Col>
           <Form.Check
             type="checkbox"
             label="Is numerical?"
@@ -80,6 +81,26 @@ const ShortTextBuilder = ({ id, data, setData, language }) => {
               });
             }}
           />
+        </Col>
+        <Col>
+          {(data.required && data.required.numerical) || false
+            ? (
+              <Form.Check
+                type="checkbox"
+                label="Is decimal?"
+                checked={data.required.decimal || false}
+                onChange={(event) => {
+                  event.persist();
+                  setData((prevData) => {
+                    const { required, ...otherDataProps } = prevData;
+                    return {
+                      required: { ...required, decimal: event.target.checked },
+                      ...otherDataProps,
+                    };
+                  });
+                }}
+              />
+            ) : null}
         </Col>
       </Form.Row>
       <Form.Row>
