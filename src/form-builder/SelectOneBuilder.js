@@ -283,7 +283,7 @@ SelectOneBuilder.propTypes = {
     })),
     required: PropTypes.shape({
       status: PropTypes.bool.isRequired,
-      values: PropTypes.arrayOf(PropTypes.string).isRequired,
+      values: PropTypes.arrayOf(PropTypes.string),
     }),
   }).isRequired,
   setForm: PropTypes.func.isRequired,

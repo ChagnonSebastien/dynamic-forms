@@ -41,7 +41,7 @@ CheckboxQuestion.propTypes = {
     })),
     required: PropTypes.shape({
       status: PropTypes.bool.isRequired,
-      value: PropTypes.bool.isRequired,
+      value: PropTypes.bool,
     }),
   }).isRequired,
   setAnswers: PropTypes.func.isRequired,

@@ -110,7 +110,7 @@ const CheckboxBuilder = ({ id, data, setForm, language }) => {
               </Form.Label>
               <Form.Control
                 as="select"
-                value={data.required.value}
+                value={data.required.value || false}
                 onChange={(event) => {
                   event.persist();
                   setForm((prefForm) => prefForm.map((question) => {
@@ -148,7 +148,7 @@ CheckboxBuilder.propTypes = {
     })),
     required: PropTypes.shape({
       status: PropTypes.bool.isRequired,
-      value: PropTypes.bool.isRequired,
+      value: PropTypes.bool,
     }),
   }).isRequired,
   setForm: PropTypes.func.isRequired,
