@@ -5,6 +5,7 @@ import CheckboxBuilder, { checkFields as checkboxCheck } from './CheckboxBuilder
 import SelectOneBuilder, { checkFields as selectOneCheck } from './SelectOneBuilder';
 import SelectAtLeastOneBuilder, { checkFields as selectAtLeastOneCheck } from './SelectAtLeastOneBuilder';
 import ShortTextBuilder, { checkFields as shortTextCheck } from './ShortTextBuilder';
+import LongTextBuilder, { checkFields as longTextCheck } from './LongTextBuilder';
 import { FaArrowUp, FaTrash, FaArrowDown } from 'react-icons/fa';
 import CheckboxQuestion from '../form-renderer/CheckBoxQuestion';
 import SelectOneQuestion from '../form-renderer/SelectOneQuestion';
@@ -67,7 +68,11 @@ const QuestionBuilder = (props) => {
       }
       break;
     case 'long-string':
-      elementEditor = <>Text Question</>
+      elementEditor = <LongTextBuilder {...builderProps} />;
+      languageValidator=longTextCheck;
+      if (preview) {
+        elementPreview = null;
+      }
       break;
     default:
       elementEditor = <>Unknown Type</>
