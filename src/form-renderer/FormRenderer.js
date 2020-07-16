@@ -6,6 +6,7 @@ import SelectOneQuestion from './SelectOneQuestion';
 import SelectAtLeastOneQuestion from './SelectAtLeastOneQuestion';
 import ShortTextQuestion from './ShortTextQuestion';
 import LongTextQuestion from './LongTextQuestion';
+import TextZone from './TextZone';
 
 const FormRenderer = (props) => {
   const { form, answers, setAnswers, language, submit } = props;
@@ -69,6 +70,15 @@ const FormRenderer = (props) => {
                 data={data}
                 answer={answers.find((answer) => answer.id === id)}
                 setAnswers={setAnswers}
+              />
+            );
+          case 'text-zone':
+            return (
+              <TextZone
+                key={id}
+                id={id}
+                language={language}
+                data={data}
               />
             );
           default:

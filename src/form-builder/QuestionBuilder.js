@@ -13,6 +13,7 @@ import SelectOneQuestion from '../form-renderer/SelectOneQuestion';
 import SelectAtLeastOneQuestion from '../form-renderer/SelectAtLeastOneQuestion';
 import ShortTextQuestion from '../form-renderer/ShortTextQuestion';
 import LongTextQuestion from '../form-renderer/LongTextQuestion';
+import TextZone from '../form-renderer/TextZone';
 
 const QuestionBuilder = (props) => {
   const { content, setForm, languages, index, first, last, preview, previewLanguage, answer, setAnswers } = props;
@@ -80,7 +81,7 @@ const QuestionBuilder = (props) => {
       elementEditor = <TextZoneBuilder {...builderProps} />;
       languageValidator=textZoneCheck;
       if (preview) {
-        elementPreview = null;
+        elementPreview = <TextZone {...previewProps} />;
       }
       break;
     default:
