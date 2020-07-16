@@ -13,14 +13,14 @@ const CheckboxQuestion = (props) => {
         <Form.Check 
           type="checkbox"
           label={label}
-          checked={answer.value || false}
+          checked={(answer && answer.checked) || false}
           onChange={(event) => {
             event.persist();
             setAnswers((prevAnswers) => {
               const newAnswers = prevAnswers.filter((a) => a.id !== id);
               newAnswers.push({
                 id,
-                value: event.target.checked,
+                checked: event.target.checked,
               });
               return newAnswers;
             })
@@ -46,10 +46,10 @@ CheckboxQuestion.propTypes = {
   }).isRequired,
   setAnswers: PropTypes.func.isRequired,
   answer: PropTypes.shape({
-    value: PropTypes.bool,
+    checked: PropTypes.bool,
   }),
 };
 
-CheckboxQuestion.defaultProps = { answer: {} };
+CheckboxQuestion.defaultProps = { answer: undefined };
 
 export default CheckboxQuestion;

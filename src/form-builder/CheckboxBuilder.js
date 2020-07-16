@@ -148,7 +148,7 @@ CheckboxBuilder.propTypes = {
     })),
     required: PropTypes.shape({
       status: PropTypes.bool.isRequired,
-      value: PropTypes.bool,
+      checked: PropTypes.bool,
     }),
   }).isRequired,
   setForm: PropTypes.func.isRequired,

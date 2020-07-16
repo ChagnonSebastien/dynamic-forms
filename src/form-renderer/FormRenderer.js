@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Form } from 'react-bootstrap';
 import CheckboxQuestion from './CheckBoxQuestion';
 import SelectOneQuestion from './SelectOneQuestion';
+import SelectAtLeastOneQuestion from './SelectAtLeastOneQuestion';
 
 const FormRenderer = (props) => {
   const { form, answers, setAnswers, language, submit } = props;
@@ -36,7 +37,16 @@ const FormRenderer = (props) => {
               />
             );
           case 'select-at-least-one':
-            return <>Select Multiple Question</>;
+            return (
+              <SelectAtLeastOneQuestion
+                key={id}
+                id={id}
+                language={language}
+                data={data}
+                answer={answers.find((answer) => answer.id === id)}
+                setAnswers={setAnswers}
+              />
+            );
           case 'short-string':
             return <>Short Answer Question</>;
           case 'long-string':
@@ -78,10 +88,9 @@ FormRenderer.propTypes = {
   })),
   answers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    content: PropTypes.arrayOf(PropTypes.shape({
-      language: PropTypes.string.isRequired,
-      text: PropTypes.string.isRequired,
-    })).isRequired,
+    value: PropTypes.string,
+    checked: PropTypes.bool,
+    values: PropTypes.arrayOf(PropTypes.string),
   })),
   setAnswers: PropTypes.func.isRequired,
   language: PropTypes.string.isRequired,
