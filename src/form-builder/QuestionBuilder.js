@@ -9,6 +9,7 @@ import { FaArrowUp, FaTrash, FaArrowDown } from 'react-icons/fa';
 import CheckboxQuestion from '../form-renderer/CheckBoxQuestion';
 import SelectOneQuestion from '../form-renderer/SelectOneQuestion';
 import SelectAtLeastOneQuestion from '../form-renderer/SelectAtLeastOneQuestion';
+import ShortTextQuestion from '../form-renderer/ShortTextQuestion';
 
 const QuestionBuilder = (props) => {
   const { content, setForm, languages, index, first, last, preview, previewLanguage, answer, setAnswers } = props;
@@ -62,7 +63,7 @@ const QuestionBuilder = (props) => {
       elementEditor = <ShortTextBuilder {...builderProps} />;
       languageValidator=shortTextCheck;
       if (preview) {
-        elementPreview = null;
+        elementPreview = <ShortTextQuestion {...previewProps} />;
       }
       break;
     case 'long-string':
@@ -231,6 +232,10 @@ QuestionBuilder.propTypes = {
         status: PropTypes.bool.isRequired,
         value: PropTypes.bool,
         values: PropTypes.arrayOf(PropTypes.string),
+        numerical: PropTypes.bool,
+        decimal: PropTypes.bool,
+        min: PropTypes.number,
+        max: PropTypes.number,
       }),
     }).isRequired,
   }).isRequired,
@@ -246,6 +251,7 @@ QuestionBuilder.propTypes = {
     value: PropTypes.string,
     checked: PropTypes.bool,
     values: PropTypes.arrayOf(PropTypes.string),
+    text: PropTypes.string,
   }),
   setAnswers: PropTypes.func,
 };

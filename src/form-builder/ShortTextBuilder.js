@@ -192,6 +192,7 @@ ShortTextBuilder.propTypes = {
     required: PropTypes.shape({
       status: PropTypes.bool.isRequired,
       numerical: PropTypes.bool,
+      decimal: PropTypes.bool,
       min: PropTypes.number,
       max: PropTypes.number,
     }),
