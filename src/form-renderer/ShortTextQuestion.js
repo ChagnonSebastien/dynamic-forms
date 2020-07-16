@@ -8,7 +8,7 @@ const ShortTextQuestion = (props) => {
   const label = labelRef ? labelRef.text : '';
 
   return (
-    <Form.Row>
+    <Form.Row className="mt-4">
       <Col>
         <FormGroup>
           <Form.Label>

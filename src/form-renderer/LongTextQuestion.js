@@ -8,7 +8,7 @@ const LongTextQuestion = (props) => {
   const label = labelRef ? labelRef.text : '';
 
   return (
-    <Form.Row>
+    <Form.Row className="mt-4">
       <Col>
         <Form.Group>
           <Form.Label>

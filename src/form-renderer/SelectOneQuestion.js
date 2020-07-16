@@ -10,10 +10,10 @@ const SelectOneQuestion = (props) => {
   const answers = data.answers ? data.answers : [];
 
   return (
-    <Form.Row>
-      <Col xs="auto">
+    <Form.Row className="mt-4">
+      <Col>
         <Form.Group>
-          <Form.Label>
+          <Form.Label >
             {label}
           </Form.Label>
           <Form.Control

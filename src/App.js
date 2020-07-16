@@ -33,6 +33,30 @@ const App = () => {
           </p>
           <p>
             Diam neque ut vivamus tempus curae; maecenas! Nisi nulla facilisi ornare. Vel tellus senectus tellus interdum vivamus suspendisse vitae venenatis neque gravida integer. Consequat et sapien condimentum dictum mauris venenatis metus sociis augue dignissim euismod. Molestie aptent nam massa ornare vulputate. Magna interdum litora dui non venenatis scelerisque facilisis id erat placerat. Metus curae; malesuada montes placerat felis. Penatibus, ornare integer dolor nam viverra. Varius.
+          </p>
+          <p>
+            Odio conubia congue quam quisque tincidunt laoreet, dolor sociosqu iaculis magna hac eu. Curae; lectus lacus, pellentesque laoreet nisi platea suspendisse cursus nascetur cubilia nascetur justo. Etiam laoreet primis pretium rhoncus sem quis laoreet. Natoque imperdiet a morbi etiam aptent tempor euismod curabitur natoque libero consequat? Est auctor habitasse rhoncus odio luctus. Inceptos pretium nam fames egestas duis ultricies curabitur! Adipiscing placerat adipiscing fermentum primis luctus risus. Venenatis malesuada vestibulum accumsan sagittis. Pulvinar venenatis per sed cursus volutpat. Fusce proin?
+          </p>
+          <p>
+            Odio gravida justo dui libero consectetur mattis! Consequat pulvinar nisi rhoncus tellus velit, dapibus curabitur dolor sapien. Pulvinar dolor lacus molestie etiam dignissim nisi taciti ultricies. Feugiat phasellus suspendisse tincidunt netus praesent cubilia dis orci platea condimentum senectus tempor. Dui adipiscing eget sit interdum accumsan curabitur. Auctor lobortis est suspendisse etiam duis aliquam vulputate consequat fermentum. Tristique rhoncus auctor orci lacus cum auctor? Vitae tellus consectetur ad sociosqu dolor! Odio tincidunt, varius faucibus platea!
+          </p>
+          <p>
+            Sem morbi vel nam varius sit massa. Sodales eros aenean cubilia magnis laoreet condimentum. Fermentum, magna nunc elementum primis! Dui in gravida potenti libero erat enim sapien varius magnis? Cubilia platea mi dis elementum facilisi. Facilisis enim bibendum leo hac integer. Sociosqu molestie metus nibh eu purus. Habitasse, proin ligula rhoncus ipsum. Pretium tempor donec nullam semper laoreet faucibus? Sociosqu diam praesent cum sagittis. Suspendisse curabitur habitant vestibulum congue sodales felis ac arcu lacinia, massa in quis. Fusce nisi nostra.
+          </p>
+          <p>
+            Nunc vitae porta bibendum eget nostra cubilia litora lacinia in. Dictumst facilisis hac elit ullamcorper convallis ut torquent urna lorem ligula laoreet mollis! Penatibus vulputate in blandit, platea ullamcorper gravida varius. Lectus felis, scelerisque imperdiet nisi pretium porttitor tincidunt. Urna curabitur, platea placerat inceptos iaculis maecenas neque aliquam semper eleifend dui? Cras ac cursus mus. Sociis adipiscing.
+          </p>
+          <p>
+            Cum commodo laoreet laoreet dolor eros. Taciti interdum, sem sem mollis risus aptent viverra sagittis eget leo magnis dictumst! Pellentesque ornare nec lectus risus. Rhoncus placerat massa porttitor ultrices mollis luctus risus semper inceptos porttitor. Interdum tellus massa felis ut penatibus sem ad hendrerit. Inceptos vel risus aenean ad massa nisl congue dapibus. Sociis elementum phasellus neque convallis, parturient eros. Sagittis metus aenean feugiat volutpat litora curabitur vehicula ac interdum fermentum! Per orci dictum sapien ullamcorper, etiam auctor laoreet suspendisse ullamcorper lacus penatibus. Nostra facilisi venenatis mollis luctus purus nascetur aenean quis.
+          </p>
+          <p>
+            Ridiculus ultricies eget nam eleifend platea blandit penatibus. Placerat risus consectetur risus ligula porta quis facilisi eget urna. Enim curabitur, et porttitor maecenas mi vulputate. Mattis posuere et urna egestas taciti imperdiet morbi parturient dolor facilisis himenaeos. Dictumst interdum lobortis ante lectus adipiscing bibendum. Faucibus tempus ad nascetur at orci adipiscing vivamus? Rutrum pellentesque aliquet conubia nulla sagittis at felis curabitur ridiculus. Nec sociis.
+          </p>
+          <p>
+            Mus fusce ullamcorper sociis ornare parturient. Aliquam magna lobortis scelerisque dolor cum curabitur. Class, magnis vel netus cursus nulla quis feugiat dictumst vivamus dapibus cubilia. Placerat fringilla auctor hendrerit ut non dignissim nunc magnis imperdiet turpis. Habitant sagittis suspendisse, malesuada in curae; fusce magna cum netus! Morbi eu molestie viverra cum sapien nullam. Pharetra sed elit habitant per. Potenti, curae; non id class quis luctus etiam sollicitudin diam. Sit praesent suspendisse maecenas turpis penatibus sodales volutpat egestas purus bibendum sapien. Porta malesuada volutpat eget leo pellentesque integer sapien dis interdum sed tellus. Diam consectetur accumsan neque penatibus. Potenti faucibus.
+          </p>
+          <p>
+            Quam, feugiat donec libero at ultrices aliquet potenti ornare senectus cubilia. Nunc placerat sociosqu, aliquet sociosqu sed ipsum luctus lacinia! Hendrerit bibendum commodo posuere elit. Aptent, maecenas habitant per pellentesque. Aliquet lacus fusce ut netus. Odio duis magnis habitant lacus nascetur adipiscing? Erat torquent sociosqu montes turpis eleifend elit tortor leo congue. Imperdiet auctor orci auctor eget accumsan? Suscipit tortor urna aenean malesuada nulla molestie dis pharetra tristique sit. Massa leo lectus neque? Sollicitudin morbi facilisi lobortis dignissim, nisi mus dis cum.
           </p> 
         </Col>
       </Row>
@@ -46,14 +70,15 @@ const App = () => {
           />
         </Col>
       </Row>
-      <Row>
-        <Col>
+      <Row className="justify-content-center">
+        <Col xs="12" md="10" lg="8" xl="6">
           <FormRenderer
             form={form}
             language="fr"
             answers={answers}
             setAnswers={setAnswers}
-            submit={() => console.log('submit!')}
+            preventValidationOnErrors
+            submit={(valid) => console.log('submit!')}
           />
         </Col>
       </Row>

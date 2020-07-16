@@ -16,73 +16,22 @@ const FormRenderer = (props) => {
       {form.map((formElement) => {
         const { data, id, type } = formElement;
 
+        const elementProps = {key: id, id, language, data, answer: answers.find((answer) => answer.id === id), setAnswers}
         switch (type) {
           case 'checkbox':
-            return (
-              <CheckboxQuestion
-                key={id}
-                id={id}
-                language={language}
-                data={data}
-                answer={answers.find((answer) => answer.id === id)}
-                setAnswers={setAnswers}
-              />
-            );
+            return <CheckboxQuestion {...elementProps} />;
           case 'select-one':
-            return (
-              <SelectOneQuestion
-                key={id}
-                id={id}
-                language={language}
-                data={data}
-                answer={answers.find((answer) => answer.id === id)}
-                setAnswers={setAnswers}
-              />
-            );
+            return <SelectOneQuestion {...elementProps} />;
           case 'select-at-least-one':
-            return (
-              <SelectAtLeastOneQuestion
-                key={id}
-                id={id}
-                language={language}
-                data={data}
-                answer={answers.find((answer) => answer.id === id)}
-                setAnswers={setAnswers}
-              />
-            );
+            return <SelectAtLeastOneQuestion {...elementProps} />;
           case 'short-string':
-            return (
-              <ShortTextQuestion
-                key={id}
-                id={id}
-                language={language}
-                data={data}
-                answer={answers.find((answer) => answer.id === id)}
-                setAnswers={setAnswers}
-              />
-            );
+            return <ShortTextQuestion {...elementProps} />;
           case 'long-string':
-            return (
-              <LongTextQuestion
-                key={id}
-                id={id}
-                language={language}
-                data={data}
-                answer={answers.find((answer) => answer.id === id)}
-                setAnswers={setAnswers}
-              />
-            );
+            return <LongTextQuestion {...elementProps} />;
           case 'text-zone':
-            return (
-              <TextZone
-                key={id}
-                id={id}
-                language={language}
-                data={data}
-              />
-            );
+            return <TextZone {...elementProps} />;
           default:
-            return <>Unknown Type</>;
+            return <p key={id}>Unknown Type</p>;
         }
       })}
       <br />

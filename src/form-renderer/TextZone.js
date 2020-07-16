@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 
 const TextZone = (props) => {
   const { language, data } = props;
@@ -8,13 +8,9 @@ const TextZone = (props) => {
   const label = labelRef ? labelRef.text : '';
 
   return (
-    <Card border="dark">
-      <Card.Body>
-        <Card.Text style={{ whiteSpace: 'pre-wrap' }}>
-          {label}
-        </Card.Text>
-      </Card.Body>
-    </Card>
+    <Alert variant="dark" style={{ whiteSpace: 'pre-wrap' }} className="mt-4">
+      {label}
+    </Alert>
   );
 };
 

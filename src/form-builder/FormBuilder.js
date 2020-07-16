@@ -31,7 +31,7 @@ const FormBuilder = (props) => {
   );
 
   return (
-    <Jumbotron style={{ background: '#ddd', position: 'relative' }}>
+    <Jumbotron style={{ background: '#eee', position: 'relative' }}>
       {preview && form.length > 0
         ? (
           <div
