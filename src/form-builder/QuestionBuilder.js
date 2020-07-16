@@ -4,6 +4,7 @@ import { Form, Badge, Col, Card, InputGroup, Row } from 'react-bootstrap';
 import CheckboxBuilder, { checkFields as checkboxCheck } from './CheckboxBuilder';
 import SelectOneBuilder, { checkFields as selectOneCheck } from './SelectOneBuilder';
 import SelectAtLeastOneBuilder, { checkFields as selectAtLeastOneCheck } from './SelectAtLeastOneBuilder';
+import ShortTextBuilder, { checkFields as shortTextCheck } from './ShortTextBuilder';
 import { FaArrowUp, FaTrash, FaArrowDown } from 'react-icons/fa';
 import CheckboxQuestion from '../form-renderer/CheckBoxQuestion';
 import SelectOneQuestion from '../form-renderer/SelectOneQuestion';
@@ -58,7 +59,11 @@ const QuestionBuilder = (props) => {
       }
       break;
     case 'short-string':
-      elementEditor = <>Short Answer Question</>
+      elementEditor = <ShortTextBuilder {...builderProps} />;
+      languageValidator=shortTextCheck;
+      if (preview) {
+        elementPreview = null;
+      }
       break;
     case 'long-string':
       elementEditor = <>Text Question</>
