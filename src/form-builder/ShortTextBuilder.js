@@ -143,7 +143,7 @@ const ShortTextBuilder = ({ id, data, setData, language }) => {
                   onChange={(event => {
                     const newValue = event.target.value;
                     const isEmpty = newValue === '';
-                    const validAmount = RegExp('^[0-9]*[\\.,]?[0-9]*$').test(newValue);
+                    const validAmount = RegExp('^-?[0-9]*[\\.,]?[0-9]*$').test(newValue);
                     if (isEmpty) {
                       setData((prevData) => {
                         const { required, ...otherDataProps } = prevData;
@@ -176,7 +176,7 @@ const ShortTextBuilder = ({ id, data, setData, language }) => {
                   onChange={(event => {
                     const newValue = event.target.value;
                     const isEmpty = newValue === '';
-                    const validAmount = RegExp('^[0-9]*[\\.,]?[0-9]*$').test(newValue);
+                    const validAmount = RegExp('^-?[0-9]*[\\.,]?[0-9]*$').test(newValue);
                     if (isEmpty) {
                       setData((prevData) => {
                         const { required, ...otherDataProps } = prevData;

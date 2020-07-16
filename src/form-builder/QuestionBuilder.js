@@ -11,6 +11,7 @@ import CheckboxQuestion from '../form-renderer/CheckBoxQuestion';
 import SelectOneQuestion from '../form-renderer/SelectOneQuestion';
 import SelectAtLeastOneQuestion from '../form-renderer/SelectAtLeastOneQuestion';
 import ShortTextQuestion from '../form-renderer/ShortTextQuestion';
+import LongTextQuestion from '../form-renderer/LongTextQuestion';
 
 const QuestionBuilder = (props) => {
   const { content, setForm, languages, index, first, last, preview, previewLanguage, answer, setAnswers } = props;
@@ -71,7 +72,7 @@ const QuestionBuilder = (props) => {
       elementEditor = <LongTextBuilder {...builderProps} />;
       languageValidator=longTextCheck;
       if (preview) {
-        elementPreview = null;
+        elementPreview = <LongTextQuestion {...previewProps} />;
       }
       break;
     default:

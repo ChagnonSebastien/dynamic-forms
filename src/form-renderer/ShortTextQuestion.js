@@ -21,7 +21,7 @@ const ShortTextQuestion = (props) => {
               const newValue = event.target.value;
               if ((data.required && data.required.numerical) || false) {
                 const isEmpty = newValue === '';
-                const validAmount = RegExp(data.required.decimal ? '^[0-9]*[\\.,]?[0-9]*$' : '^[0-9]*$').test(newValue);
+                const validAmount = RegExp(data.required.decimal ? '^-?[0-9]*[\\.,]?[0-9]*$' : '^[0-9]*$').test(newValue);
                 if (isEmpty) {
                   setAnswers((prevAnswers) => {
                     const newAnswers = prevAnswers.filter((a) => a.id !== id);

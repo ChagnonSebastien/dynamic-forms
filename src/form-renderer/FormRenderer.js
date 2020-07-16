@@ -5,6 +5,7 @@ import CheckboxQuestion from './CheckBoxQuestion';
 import SelectOneQuestion from './SelectOneQuestion';
 import SelectAtLeastOneQuestion from './SelectAtLeastOneQuestion';
 import ShortTextQuestion from './ShortTextQuestion';
+import LongTextQuestion from './LongTextQuestion';
 
 const FormRenderer = (props) => {
   const { form, answers, setAnswers, language, submit } = props;
@@ -60,7 +61,16 @@ const FormRenderer = (props) => {
               />
             );
           case 'long-string':
-            return <>Text Question</>;
+            return (
+              <LongTextQuestion
+                key={id}
+                id={id}
+                language={language}
+                data={data}
+                answer={answers.find((answer) => answer.id === id)}
+                setAnswers={setAnswers}
+              />
+            );
           default:
             return <>Unknown Type</>;
         }
