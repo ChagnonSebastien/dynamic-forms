@@ -95,8 +95,8 @@ FormRenderer.propTypes = {
         values: PropTypes.arrayOf(PropTypes.string),
         numerical: PropTypes.bool,
         decimal: PropTypes.bool,
-        min: PropTypes.number,
-        max: PropTypes.number,
+        min: PropTypes.string,
+        max: PropTypes.string,
       }),
     })
   })),

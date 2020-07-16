@@ -141,8 +141,9 @@ const ShortTextBuilder = ({ id, data, setData, language }) => {
                   placeholder="Leave empty if no restriction"
                   value={((data.required && data.required.min !== undefined) || false) ? data.required.min : ''}
                   onChange={(event => {
-                    const isEmpty = event.target.value === '';
-                    const newAmount = Number(event.target.value);
+                    const newValue = event.target.value;
+                    const isEmpty = newValue === '';
+                    const validAmount = RegExp('^[0-9]*[\\.,]?[0-9]*$').test(newValue);
                     if (isEmpty) {
                       setData((prevData) => {
                         const { required, ...otherDataProps } = prevData;
@@ -151,11 +152,11 @@ const ShortTextBuilder = ({ id, data, setData, language }) => {
                           ...otherDataProps,
                         };
                       });
-                    } else if (!Number.isNaN(newAmount)) {
+                    } else if (validAmount) {
                       setData((prevData) => {
                         const { required, ...otherDataProps } = prevData;
                         return {
-                          required: { ...required, min: newAmount },
+                          required: { ...required, min: newValue.replace(',', '.') },
                           ...otherDataProps,
                         };
                       });
@@ -173,8 +174,9 @@ const ShortTextBuilder = ({ id, data, setData, language }) => {
                   placeholder="Leave empty if no restriction"
                   value={((data.required && data.required.max !== undefined) || false) ? data.required.max : ''}
                   onChange={(event => {
-                    const isEmpty = event.target.value === '';
-                    const newAmount = Number(event.target.value);
+                    const newValue = event.target.value;
+                    const isEmpty = newValue === '';
+                    const validAmount = RegExp('^[0-9]*[\\.,]?[0-9]*$').test(newValue);
                     if (isEmpty) {
                       setData((prevData) => {
                         const { required, ...otherDataProps } = prevData;
@@ -183,11 +185,11 @@ const ShortTextBuilder = ({ id, data, setData, language }) => {
                           ...otherDataProps,
                         };
                       });
-                    } else if (!Number.isNaN(newAmount)) {
+                    } else if (validAmount) {
                       setData((prevData) => {
                         const { required, ...otherDataProps } = prevData;
                         return {
-                          required: { ...required, max: newAmount },
+                          required: { ...required, max: newValue.replace(',', '.') },
                           ...otherDataProps,
                         };
                       });
@@ -214,8 +216,8 @@ ShortTextBuilder.propTypes = {
       status: PropTypes.bool.isRequired,
       numerical: PropTypes.bool,
       decimal: PropTypes.bool,
-      min: PropTypes.number,
-      max: PropTypes.number,
+      min: PropTypes.string,
+      max: PropTypes.string,
     }),
   }).isRequired,
   setData: PropTypes.func.isRequired,

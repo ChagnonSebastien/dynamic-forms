@@ -31,7 +31,7 @@ const ShortTextQuestion = (props) => {
                 } else if (validAmount) {
                   setAnswers((prevAnswers) => {
                     const newAnswers = prevAnswers.filter((a) => a.id !== id);
-                    newAnswers.push({ id, text: newValue });
+                    newAnswers.push({ id, text: newValue.replace(',', '.') });
                     return newAnswers;
                   });
                 }
@@ -62,8 +62,8 @@ ShortTextQuestion.propTypes = {
       status: PropTypes.bool.isRequired,
       numerical: PropTypes.bool,
       decimal: PropTypes.bool,
-      min: PropTypes.number,
-      max: PropTypes.number,
+      min: PropTypes.string,
+      max: PropTypes.string,
     }),
   }).isRequired,
   setAnswers: PropTypes.func.isRequired,
