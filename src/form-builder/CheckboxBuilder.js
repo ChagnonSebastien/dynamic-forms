@@ -15,7 +15,7 @@ export const checkFields = (data, language) => {
   return true;
 }
 
-const CheckboxBuilder = ({ id, data, setForm, language }) => {
+const CheckboxBuilder = ({ id, data, setData, language }) => {
   const questionRef = data.questions
     ? data.questions.find((question) => question.language === language)
     : null;
@@ -34,34 +34,24 @@ const CheckboxBuilder = ({ id, data, setForm, language }) => {
               placeholder={`${language.toUpperCase()} question...`}
               onChange={(event) => {
                 event.persist();
-                setForm((prefForm) => prefForm.map((question) => {
-                  if (question.id === id) {
-                    const { data, ...otherQuestionProps } = question;
-                    const { questions, ...otherDataProps } = data;
+                setData((prevData) => {
+                  const { questions, ...otherDataProps } = prevData;
 
-                    if (questionRef) {
-                      return {
-                        data: { 
-                          questions: questions.map((q) => (
-                            q.language === language
-                              ? { language, text: event.target.value }
-                              : q
-                          )),
-                          ...otherDataProps,
-                        },
-                        ...otherQuestionProps,
-                      };
-                    }
-
-                    const newQuestions = questions ? questions.map((question) => question) : [];
-                    newQuestions.push({ language, text: event.target.value });
-                    return {
-                      data: { questions: newQuestions, ...otherDataProps },
-                      ...otherQuestionProps,
+                  if (questionRef) {
+                    return { 
+                      questions: questions.map((q) => (
+                        q.language === language
+                          ? { language, text: event.target.value }
+                          : q
+                      )),
+                      ...otherDataProps,
                     };
                   }
-                  return question;
-                }));
+
+                  const newQuestions = questions ? questions.map((question) => question) : [];
+                  newQuestions.push({ language, text: event.target.value });
+                  return { questions: newQuestions, ...otherDataProps };
+                });
               }}
             />
           </InputGroup>
@@ -75,30 +65,20 @@ const CheckboxBuilder = ({ id, data, setForm, language }) => {
             checked={(data.required && data.required.status) || false}
             onChange={(event) => {
               event.persist();
-              setForm((prefForm) => prefForm.map((question) => {
-                if (question.id === id) {
-                  const { data, ...otherQuestionProps } = question;
-                  const { required, ...otherDataProps } = data;
-                  if (!required) {
-                    return {
-                      data: {
-                        required: { status: event.target.checked, value: true },
-                        ...otherDataProps,
-                      },
-                      ...otherQuestionProps,
-                    }
-                  }
-
+              setData((prevData) => {
+                const { required, ...otherDataProps } = prevData;
+                if (!required) {
                   return {
-                    data: {
-                      required: { ...required, status: event.target.checked },
-                      ...otherDataProps,
-                    },
-                    ...otherQuestionProps,
-                  }
+                    required: { status: event.target.checked, value: true },
+                    ...otherDataProps,
+                  };
                 }
-                return question;
-              }));
+
+                return {
+                  required: { ...required, status: event.target.checked },
+                  ...otherDataProps,
+                };
+              });
             }}
           />
         </Col>
@@ -113,18 +93,9 @@ const CheckboxBuilder = ({ id, data, setForm, language }) => {
                 value={data.required.value || false}
                 onChange={(event) => {
                   event.persist();
-                  setForm((prefForm) => prefForm.map((question) => {
-                    if (question.id === id) {
-                      const { data, ...otherQuestionProps } = question;
-                      return {
-                        data: {
-                          ...data,
-                          required: { status: true, value: event.target.value === 'true' },
-                        },
-                        ...otherQuestionProps,
-                      }
-                    }
-                    return question;
+                  setData((prevData) => ({
+                    ...prevData,
+                    required: { status: true, value: event.target.value === 'true' },
                   }));
                 }}
               >
@@ -151,7 +122,7 @@ CheckboxBuilder.propTypes = {
       checked: PropTypes.bool,
     }),
   }).isRequired,
-  setForm: PropTypes.func.isRequired,
+  setData: PropTypes.func.isRequired,
 };
 
 CheckboxBuilder.defaultProps = {};

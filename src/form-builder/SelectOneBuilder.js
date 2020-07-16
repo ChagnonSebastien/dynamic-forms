@@ -27,7 +27,7 @@ export const checkFields = (data, language) => {
   return true;
 }
 
-const SelectOneBuilder = ({ id, data, setForm, language }) => {
+const SelectOneBuilder = ({ id, data, setData, language }) => {
   const questionRef = data.questions
     ? data.questions.find((question) => question.language === language)
     : null;
@@ -48,34 +48,24 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
               placeholder={`${language.toUpperCase()} question...`}
               onChange={(event) => {
                 event.persist();
-                setForm((prefForm) => prefForm.map((question) => {
-                  if (question.id === id) {
-                    const { data, ...otherQuestionProps } = question;
-                    const { questions, ...otherDataProps } = data;
+                setData((prevData) => {
+                  const { questions, ...otherDataProps } = prevData;
 
-                    if (questionRef) {
-                      return {
-                        data: { 
-                          questions: questions.map((question) => (
-                            question.language === language
-                              ? { language, text: event.target.value }
-                              : question
-                          )),
-                          ...otherDataProps,
-                        },
-                        ...otherQuestionProps,
-                      };
-                    }
-
-                    const newQuestions = questions ? questions.map((question) => question) : [];
-                    newQuestions.push({ language, text: event.target.value });
-                    return {
-                      data: { questions: newQuestions, ...otherDataProps },
-                      ...otherQuestionProps,
+                  if (questionRef) {
+                    return { 
+                      questions: questions.map((question) => (
+                        question.language === language
+                          ? { language, text: event.target.value }
+                          : question
+                      )),
+                      ...otherDataProps,
                     };
                   }
-                  return question;
-                }));
+
+                  const newQuestions = questions ? questions.map((question) => question) : [];
+                  newQuestions.push({ language, text: event.target.value });
+                  return { questions: newQuestions, ...otherDataProps };
+                });
               }}
             />
           </InputGroup>
@@ -89,68 +79,48 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
             checked={(data.required && data.required.status) || false}
             onChange={(event) => {
               event.persist();
-              setForm((prefForm) => prefForm.map((question) => {
-                if (question.id === id) {
-                  const { data, ...otherQuestionProps } = question;
-                  const { required, ...otherDataProps } = data;
-                  if (!required) {
-                    return {
-                      data: {
-                        required: { status: event.target.checked, values: [] },
-                        ...otherDataProps,
-                      },
-                      ...otherQuestionProps,
-                    }
-                  }
-
+              setData((prevData) => {
+                const { required, ...otherDataProps } = prevData;
+                if (!required) {
                   return {
-                    data: {
-                      required: { ...required, status: event.target.checked },
-                      ...otherDataProps,
-                    },
-                    ...otherQuestionProps,
-                  }
+                    required: { status: event.target.checked, values: [] },
+                    ...otherDataProps,
+                  };
                 }
-                return question;
-              }));
+
+                return {
+                  required: { ...required, status: event.target.checked },
+                  ...otherDataProps,
+                };
+              });
             }}
           />
         </Col>
         <Col xs="auto">
           <Button
             size="sm"
-            onClick={() => setForm((prefForm) => prefForm.map((question) => {
-              if (question.id === id) {
-                const { data, ...otherQuestionProps } = question;
-                const { answers, ...otherDataProps } = data;
-                if (!answers) {
-                  return {
-                    data: {
-                      answers: [{
-                        id: uuid(),
-                        content: [],
-                      }],
-                      ...otherDataProps,
-                    },
-                    ...otherQuestionProps,
-                  }
-                }
-
-                const newAnswers = answers.map((answer) => answer);
-                newAnswers.push({
-                  id: uuid(),
-                  content: [],
-                });
+            onClick={() => setData((prevData) => {
+              const { answers, ...otherDataProps } = prevData;
+              if (!answers) {
                 return {
-                  data: {
-                    answers: newAnswers,
-                    ...otherDataProps,
-                  },
-                  ...otherQuestionProps,
-                }
+                  answers: [{
+                    id: uuid(),
+                    content: [],
+                  }],
+                  ...otherDataProps,
+                };
               }
-              return question;
-            }))}
+
+              const newAnswers = answers.map((answer) => answer);
+              newAnswers.push({
+                id: uuid(),
+                content: [],
+              });
+              return {
+                answers: newAnswers,
+                ...otherDataProps,
+              };
+            })}
           >
             New Choice
           </Button>
@@ -171,28 +141,21 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
                   disabled={!((data.required && data.required.status) || false)}
                   onChange={(event) => {
                     event.persist();
-                    setForm((prefForm) => prefForm.map((question) => {
-                      if (question.id === id) {
-                        const { data, ...otherQuestionProps } = question;
-                        const { required, ...otherDataProps } = data;
-                        if (!required) {
-                          return question;
-                        }
-
-                        const newValues = required.values ? required.values.filter((value) => value !== answer.id) : [];
-                        if (event.target.checked) {
-                          newValues.push(answer.id);
-                        }
-                        return {
-                          data: {
-                            required: { ...required, values: newValues },
-                            ...otherDataProps,
-                          },
-                          ...otherQuestionProps,
-                        };
+                    setData((prevData) => {
+                      const { required, ...otherDataProps } = prevData;
+                      if (!required) {
+                        return prevData;
                       }
-                      return question;
-                    }));
+
+                      const newValues = required.values ? required.values.filter((value) => value !== answer.id) : [];
+                      if (event.target.checked) {
+                        newValues.push(answer.id);
+                      }
+                      return {
+                        required: { ...required, values: newValues },
+                        ...otherDataProps,
+                      };
+                    });
                   }}
                 />
               </Col>
@@ -204,59 +167,43 @@ const SelectOneBuilder = ({ id, data, setForm, language }) => {
                   placeholder="Option"
                   onChange={(event) => {
                     event.persist();
-                    setForm((prefForm) => prefForm.map((question) => {
-                      if (question.id === id) {
-                        const { data, ...otherQuestionProps } = question;
-                        const { answers, ...otherDataProps } = data;
-                        return {
-                          data: {
-                            answers: answers.map((a, i) => {
-                              if (i === index) {
-                                if (specificRef) {
-                                  return {
-                                    id: a.id,
-                                    content: content.map((specific) => (
-                                      specific.language === language
-                                        ? { language, text: event.target.value }
-                                        : specific
-                                    ))
-                                  };
-                                }
+                    setData((prevData) => {
+                      const { answers, ...otherDataProps } = prevData;
+                      return {
+                        answers: answers.map((a, i) => {
+                          if (i === index) {
+                            if (specificRef) {
+                              return {
+                                id: a.id,
+                                content: content.map((specific) => (
+                                  specific.language === language
+                                    ? { language, text: event.target.value }
+                                    : specific
+                                ))
+                              };
+                            }
 
-                                const newContent = content ? content.map((specific) => specific) : [];
-                                newContent.push({ language, text: event.target.value });
-                                return { id: a.id, content: newContent };
-                              }
-                              return a;
-                            }),
-                            ...otherDataProps,
-                          },
-                          ...otherQuestionProps,
-                        };
-                      }
-                      return question;
-                    }));
+                            const newContent = content ? content.map((specific) => specific) : [];
+                            newContent.push({ language, text: event.target.value });
+                            return { id: a.id, content: newContent };
+                          }
+                          return a;
+                        }),
+                        ...otherDataProps,
+                      };
+                    });
                   }}
                 />
               </Col>
               <Col xs="auto">
                 <FaTrash
-                  onClick={() => setForm((prevForm) => prevForm.map((question) => {
-                    if (question.id === id) {
-                      const { data, ...otherQuestionProps } = question;
-                      const { answers, ...otherDataProps } = data;
-                      const newAnswers = answers.map((answer) => answer);
-                      newAnswers.splice(index, 1);
-                      return {
-                        data: {
-                          answers: newAnswers,
-                          ...otherDataProps,
-                        },
-                        ...otherQuestionProps,
-                      }
-                    }
-                    return question;
-                  }))}
+                  onClick={() => setData((prevData) => {
+                    const { answers, ...otherDataProps } = prevData;
+                    return {
+                      answers: answers.filter((_, i) => i !== index),
+                      ...otherDataProps,
+                    };
+                  })}
                 />
               </Col>
             </Form.Row>
@@ -286,7 +233,7 @@ SelectOneBuilder.propTypes = {
       values: PropTypes.arrayOf(PropTypes.string),
     }),
   }).isRequired,
-  setForm: PropTypes.func.isRequired,
+  setData: PropTypes.func.isRequired,
 };
 
 SelectOneBuilder.defaultProps = {};

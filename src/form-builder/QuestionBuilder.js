@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Badge, Col, Card, InputGroup, Row } from 'react-bootstrap';
 import CheckboxBuilder, { checkFields as checkboxCheck } from './CheckboxBuilder';
@@ -19,7 +19,20 @@ const QuestionBuilder = (props) => {
   let elementPreview = null;
   let languageValidator = () => true;
 
-  const builderProps = { id, language: selectedLanguage, data, setForm };
+  const setData = useCallback((dataUpdateFunction) => {
+    setForm((prefForm) => prefForm.map((question) => {
+      if (question.id === id) {
+        const { data, ...otherQuestionProps } = question;
+        return {
+          data: dataUpdateFunction(data),
+          ...otherQuestionProps,
+        };
+      }
+      return question;
+    }));
+  }, [setForm, id])
+
+  const builderProps = { id, language: selectedLanguage, data, setData };
   const previewProps = preview ? { id, language: previewLanguage, data, answer, setAnswers } : undefined;
 
   switch (type) {
