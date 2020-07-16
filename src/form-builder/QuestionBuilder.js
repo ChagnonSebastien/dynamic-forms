@@ -6,6 +6,7 @@ import SelectOneBuilder, { checkFields as selectOneCheck } from './SelectOneBuil
 import SelectAtLeastOneBuilder, { checkFields as selectAtLeastOneCheck } from './SelectAtLeastOneBuilder';
 import ShortTextBuilder, { checkFields as shortTextCheck } from './ShortTextBuilder';
 import LongTextBuilder, { checkFields as longTextCheck } from './LongTextBuilder';
+import TextZoneBuilder, { checkFields as textZoneCheck } from './TextZoneBuilder';
 import { FaArrowUp, FaTrash, FaArrowDown } from 'react-icons/fa';
 import CheckboxQuestion from '../form-renderer/CheckBoxQuestion';
 import SelectOneQuestion from '../form-renderer/SelectOneQuestion';
@@ -73,6 +74,13 @@ const QuestionBuilder = (props) => {
       languageValidator=longTextCheck;
       if (preview) {
         elementPreview = <LongTextQuestion {...previewProps} />;
+      }
+      break;
+    case 'text-zone':
+      elementEditor = <TextZoneBuilder {...builderProps} />;
+      languageValidator=textZoneCheck;
+      if (preview) {
+        elementPreview = null;
       }
       break;
     default:
@@ -168,6 +176,9 @@ const QuestionBuilder = (props) => {
                           </option>
                           <option value="long-string">
                             Text Question
+                          </option>
+                          <option value="text-zone">
+                            Info
                           </option>
                         </Form.Control>
                         <InputGroup.Append>
