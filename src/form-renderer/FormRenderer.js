@@ -8,6 +8,32 @@ import ShortTextQuestion, { verifyAnswer as shortTextVerify} from './ShortTextQu
 import LongTextQuestion, { verifyAnswer as longTextVerify} from './LongTextQuestion';
 import TextZone from './TextZone';
 
+export const verifyAnswers = (form, answers) => form.map((formElement) => {
+  const { data, id, type } = formElement;
+
+  let error;
+  switch (type) {
+    case 'checkbox':
+      error = checkboxVerify(data, answers.find((answer) => answer.id === id));
+      break;
+    case 'select-one':
+      error = selectOneVerify(data, answers.find((answer) => answer.id === id));
+      break;
+    case 'select-at-least-one':
+      error = selectAtLeastOneVerify(data, answers.find((answer) => answer.id === id));
+      break;
+    case 'short-string':
+      error = shortTextVerify(data, answers.find((answer) => answer.id === id));
+      break;
+    case 'long-string':
+      error = longTextVerify(data, answers.find((answer) => answer.id === id));
+      break;
+    default:
+  }
+  return { id, error };
+}).filter((potentialError) => potentialError.error);
+
+
 const FormRenderer = (props) => {
   const { form, answers, setAnswers, language, submit, preventValidationOnErrors } = props;
 
@@ -43,31 +69,7 @@ const FormRenderer = (props) => {
       })}
       <br />
       <Button onClick={() => {
-        const individualErrors = form.map((formElement) => {
-          const { data, id, type } = formElement;
-
-          let error;
-          switch (type) {
-            case 'checkbox':
-              error = checkboxVerify(data, answers.find((answer) => answer.id === id));
-              break;
-            case 'select-one':
-              error = selectOneVerify(data, answers.find((answer) => answer.id === id));
-              break;
-            case 'select-at-least-one':
-              error = selectAtLeastOneVerify(data, answers.find((answer) => answer.id === id));
-              break;
-            case 'short-string':
-              error = shortTextVerify(data, answers.find((answer) => answer.id === id));
-              break;
-            case 'long-string':
-              error = longTextVerify(data, answers.find((answer) => answer.id === id));
-              break;
-            default:
-          }
-          return { id, error };
-        }).filter((potentialError) => potentialError.error);
-
+        const individualErrors = verifyAnswers(form, answers);
         if (preventValidationOnErrors && individualErrors.length > 0) {
           setErrors(individualErrors);
         } else {
