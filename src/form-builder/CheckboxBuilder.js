@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Form, InputGroup, Col } from 'react-bootstrap';
 
@@ -127,4 +127,4 @@ CheckboxBuilder.propTypes = {
 
 CheckboxBuilder.defaultProps = {};
 
-export default CheckboxBuilder;
+export default memo(CheckboxBuilder);

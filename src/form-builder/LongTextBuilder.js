@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Form, InputGroup, Col, FormControl } from 'react-bootstrap';
 
@@ -177,4 +177,4 @@ LongTextBuilder.propTypes = {
 
 LongTextBuilder.defaultProps = {};
 
-export default LongTextBuilder;
+export default memo(LongTextBuilder);

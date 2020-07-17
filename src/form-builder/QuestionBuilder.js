@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Badge, Col, Card, InputGroup, Row } from 'react-bootstrap';
 import CheckboxBuilder, { checkFields as checkboxCheck } from './CheckboxBuilder';
@@ -281,4 +281,4 @@ QuestionBuilder.defaultProps = {
   setAnswer: () => {},
 };
 
-export default QuestionBuilder;
+export default memo(QuestionBuilder);

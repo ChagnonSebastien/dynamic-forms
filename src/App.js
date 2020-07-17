@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import FormBuilder from './form-builder/FormBuilder';
 import FormRenderer from './form-renderer/FormRenderer';
@@ -6,11 +6,13 @@ import FormRenderer from './form-renderer/FormRenderer';
 const App = () => {
   const [form, setForm] = useState([{"data":{"questions":[{"language":"fr","text":"Afin de participer à l'étude, nous vous invitons à remplir ce court questionnaire pour déterminer si vous être éligible à participer à l'étude.\nSi vous ne vous sentez pas confortable de répondre à ces questions, nous vous invitons à contacter directement le MHICC par courriel."}]},"type":"text-zone","id":"5421cb1e-8cf7-4ed6-86b1-a2ae99b04e20"},{"data":{"questions":[{"language":"fr","text":"Souffrez-vous ou avez vous souffert lors des 14 derniers jours de maux de tête, de maux de ventre, de toux, d'écoulements nasales, ou de diarrhée?"}],"required":{"status":true,"values":["4a0d3f21-fefc-44fc-991c-d0646e78374c"]},"answers":[{"id":"3d62db2e-1a35-49bc-ba59-578dd490ed0b","content":[{"language":"fr","text":"Oui"}]},{"id":"4a0d3f21-fefc-44fc-991c-d0646e78374c","content":[{"language":"fr","text":"Non"}]}]},"id":"5421cb1e-8cf7-4ed6-86b1-a2ae99b04e21","type":"select-one"},{"data":{"required":{"status":false,"values":["7bf8d26e-4676-4b0b-908b-6c0818c2cb28","ae479952-3952-457f-b33f-00e81252bb80","0a5e0804-22f9-4314-8a20-2787d1720927"]},"answers":[{"id":"af2e40ed-5111-4364-8cb1-2401507c1998","content":[{"language":"fr","text":"Moins d'un mois"}]},{"id":"0a5e0804-22f9-4314-8a20-2787d1720927","content":[{"language":"fr","text":"Entre un mois et un an"}]},{"id":"ae479952-3952-457f-b33f-00e81252bb80","content":[{"language":"fr","text":"Il y a plus d'un an"}]}],"questions":[{"language":"fr","text":"À quand date votre dernier rendez-vous chez le dentiste?"}]},"type":"select-one","id":"5421cb1e-8cf7-4ed6-86b1-a2ae99b04e22"},{"data":{"questions":[{"language":"fr","text":"Pour chacunes des conditions médicales suivantes, veuillez sélectionner si elle vous concerne."}]},"type":"text-zone","id":"5421cb1e-8cf7-4ed6-86b1-a2ae99b04e23"},{"data":{"required":{"status":true,"value":false},"questions":[{"language":"fr","text":"Anémie"}]},"type":"checkbox","id":"5421cb1e-8cf7-4ed6-86b1-a2ae99b04e24"},{"data":{"required":{"status":true,"value":false},"questions":[{"language":"fr","text":"Sida"}]},"id":"5421cb1e-8cf7-4ed6-86b1-a2ae99b04e25","type":"checkbox"},{"data":{"required":{"status":true,"value":false},"questions":[{"language":"fr","text":"Hépatite A"}]},"id":"97ce2ec3-ebc8-46ac-aa98-c9a296ce9dd6","type":"checkbox"},{"data":{"questions":[{"language":"fr","text":"Diabète de type II"}]},"id":"38a8d90e-9a97-4021-8ed6-738ade9d0a90","type":"checkbox"},{"data":{"questions":[{"language":"fr","text":"Lymphangiome"}]},"id":"3b740170-06f0-4f44-8c9a-8a496876fc3f","type":"checkbox"},{"data":{"required":{"numerical":true,"status":true,"decimal":true,"min":"45"},"questions":[{"language":"fr","text":"Quel est votre poid en kilogrammes? (kg)"}]},"type":"short-string","id":"81b9e680-0788-410f-879b-d6a7ed905544"},{"data":{"required":{"status":false,"value":true},"questions":[{"language":"fr","text":"Pourquoi souhaitez-vous participer à cette étude?"}]},"type":"long-string","id":"226ac7ee-1b34-42e6-a824-b85a876fd926"}]);
   const [answers, setAnswers] = useState([]);
-
-  const updateForm = (updateFunction) => {
-    console.log(JSON.stringify(updateFunction(form)));
-    setForm(updateFunction)
-  }
+  const [languages] = useState(['fr', 'en']);
+  const submitForm = useCallback((errors) => {
+    console.log(errors.length === 0 ? 'Form is valid!' : 'Invalid Form :(');
+    if (errors.length > 0) {
+      console.table(errors);
+    }
+  }, []);
 
   return (
     <Container fluid>
@@ -20,7 +22,7 @@ const App = () => {
             Quam aptent mi vitae rhoncus vel tempor, praesent elementum. Est curae; tortor scelerisque ac sem luctus taciti rutrum netus. Non pellentesque nisi viverra torquent in parturient fusce montes torquent habitant cras fusce. Adipiscing fusce curabitur consequat et nullam curae; facilisi elementum libero. Interdum fringilla inceptos fusce parturient nisl in himenaeos hac auctor phasellus.
           </p>
           <p>
-            Placerat hendrerit in, aenean quis velit dictum sit convallis. Leo conubia est adipiscing. Primis eros curabitur senectus lacinia hac taciti, suspendisse imperdiet. Ut eros etiam condimentum cursus netus lorem pharetra. Maecenas turpis ridiculus congue sociosqu. Purus conubia odio etiam convallis luctus pharetra eget elementum. Aptent ante pretium, ad in pharetra? Dui velit urna facilisis et sed gravida consectetur metus suscipit. Consequat, orci nunc sollicitudin! Laoreet quis sed dictum suspendisse ad dapibus penatibus penatibus sociis. Vitae cursus sociosqu, maecenas morbi tortor lacus senectus molestie viverra class maecenas sapien. Ipsum lorem eros diam tellus ut eget integer quis.
+            Placerat hendrerit in, aenean quis cvelit dictum sit convallis. Leo conubia est adipiscing. Primis eros curabitur senectus lacinia hac taciti, suspendisse imperdiet. Ut eros etiam condimentum cursus netus lorem pharetra. Maecenas turpis ridiculus congue sociosqu. Purus conubia odio etiam convallis luctus pharetra eget elementum. Aptent ante pretium, ad in pharetra? Dui velit urna facilisis et sed gravida consectetur metus suscipit. Consequat, orci nunc sollicitudin! Laoreet quis sed dictum suspendisse ad dapibus penatibus penatibus sociis. Vitae cursus sociosqu, maecenas morbi tortor lacus senectus molestie viverra class maecenas sapien. Ipsum lorem eros diam tellus ut eget integer quis.
           </p>
           <p>
             Primis natoque nunc platea. Lectus facilisi adipiscing nisi vivamus dictumst facilisis dis tempor. Felis posuere ultricies curabitur mattis orci proin posuere mattis eleifend pretium. Nunc aptent dui ultrices, venenatis mus massa faucibus rutrum ipsum fringilla pellentesque? Lacinia pulvinar dis proin tempus proin erat dictumst felis nulla praesent ornare. Erat congue consectetur himenaeos viverra ad lectus nam. Nulla nisi interdum tincidunt nam a nibh nascetur eget ultrices.
@@ -64,9 +66,8 @@ const App = () => {
         <Col>
           <FormBuilder
             form={form}
-            setForm={updateForm}
-            languages={['fr', 'en', 'es']}
-            preview
+            setForm={setForm}
+            languages={languages}
           />
         </Col>
       </Row>
@@ -78,12 +79,7 @@ const App = () => {
             answers={answers}
             setAnswers={setAnswers}
             preventSubmitOnErrors
-            submit={(errors) => {
-              console.log(errors.length === 0 ? 'Form is valid!' : 'Invalid Form :(');
-              if (errors.length > 0) {
-                console.table(errors);
-              }
-            }}
+            submit={submitForm}
           />
         </Col>
       </Row>

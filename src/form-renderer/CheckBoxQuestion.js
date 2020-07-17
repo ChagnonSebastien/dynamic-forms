@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Col } from 'react-bootstrap';
 
@@ -77,4 +77,4 @@ CheckboxQuestion.defaultProps = {
   error: undefined,
 };
 
-export default CheckboxQuestion;
+export default memo(CheckboxQuestion);

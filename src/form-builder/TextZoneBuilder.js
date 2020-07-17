@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Form, InputGroup, Col } from 'react-bootstrap';
 
@@ -76,4 +76,4 @@ TextZoneBuilder.propTypes = {
 
 TextZoneBuilder.defaultProps = {};
 
-export default TextZoneBuilder;
+export default memo(TextZoneBuilder);

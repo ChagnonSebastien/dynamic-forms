@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Form, InputGroup, Col, FormControl } from 'react-bootstrap';
 
@@ -225,4 +225,4 @@ ShortTextBuilder.propTypes = {
 
 ShortTextBuilder.defaultProps = {};
 
-export default ShortTextBuilder;
+export default memo(ShortTextBuilder);

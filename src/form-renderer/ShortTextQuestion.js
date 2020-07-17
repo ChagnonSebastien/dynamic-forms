@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Col, FormGroup } from 'react-bootstrap';
 
@@ -108,4 +108,4 @@ ShortTextQuestion.defaultProps = {
   error: undefined,
 };
 
-export default ShortTextQuestion;
+export default memo(ShortTextQuestion);

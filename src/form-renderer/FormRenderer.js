@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form } from 'react-bootstrap';
 import CheckboxQuestion, { verifyAnswer as checkboxVerify} from './CheckBoxQuestion';
@@ -127,4 +127,4 @@ FormRenderer.defaultProps = {
   preventSubmitOnErrors: false,
 };
 
-export default FormRenderer;
+export default memo(FormRenderer);

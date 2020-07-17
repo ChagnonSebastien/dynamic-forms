@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Form, InputGroup, Col, Button } from 'react-bootstrap';
 import { FaTrash } from 'react-icons/fa';
@@ -33,7 +33,7 @@ const SelectAtLeastOneBuilder = ({ id, data, setData, language }) => {
     : null;
 
   const question = questionRef ? questionRef.text : '';
-  
+
   return (
     <Form>
       <Form.Row>
@@ -210,4 +210,4 @@ SelectAtLeastOneBuilder.propTypes = {
 
 SelectAtLeastOneBuilder.defaultProps = {};
 
-export default SelectAtLeastOneBuilder;
+export default memo(SelectAtLeastOneBuilder);

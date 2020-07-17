@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'react-bootstrap';
 
@@ -31,4 +31,4 @@ TextZone.propTypes = {
 
 TextZone.defaultProps = { answer: undefined };
 
-export default TextZone;
+export default memo(TextZone);

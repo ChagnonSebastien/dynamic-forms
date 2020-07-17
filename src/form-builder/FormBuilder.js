@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Row, Col, Badge, Jumbotron } from 'react-bootstrap';
 import {v4 as uuid} from 'uuid';
@@ -153,4 +153,4 @@ FormBuilder.propTypes = {
 
 FormBuilder.defaultProps = { preview: false };
 
-export default FormBuilder;
+export default memo(FormBuilder);

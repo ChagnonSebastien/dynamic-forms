@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Col } from 'react-bootstrap';
 
@@ -105,4 +105,4 @@ SelectOneQuestion.defaultProps = {
   error: undefined,
 };
 
-export default SelectOneQuestion;
+export default memo(SelectOneQuestion);
