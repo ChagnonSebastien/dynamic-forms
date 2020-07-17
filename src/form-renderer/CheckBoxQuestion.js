@@ -2,6 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Col } from 'react-bootstrap';
 
+export const verifyAnswer = (data, answer) => {
+  if (!((data.required && data.required.status) || false)) {
+    return undefined;
+  }
+
+  const answerState = (answer && answer.checked) || false;
+  const requiredState = data.required.value || false;
+  const valid = answerState === requiredState;
+  return valid ? undefined : `This field must be ${requiredState ? '' : 'un'}checked`;
+}
+
 const CheckboxQuestion = (props) => {
   const { language, data, answer, setAnswers, id } = props;
   const labelRef = data.questions ? data.questions.find((specific) => specific.language === language) : undefined;

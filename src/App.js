@@ -77,8 +77,12 @@ const App = () => {
             language="fr"
             answers={answers}
             setAnswers={setAnswers}
-            preventValidationOnErrors
-            submit={(valid) => console.log('submit!')}
+            submit={(errors) => {
+              console.log(errors.length === 0 ? 'Form is valid!' : 'Invalid Form :(');
+              if (errors.length > 0) {
+                console.table(errors);
+              }
+            }}
           />
         </Col>
       </Row>

@@ -2,6 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Col, FormGroup } from 'react-bootstrap';
 
+export const verifyAnswer = (data, answer) => {
+  if (!((data.required && data.required.status) || false)) {
+    return undefined;
+  }
+
+  const numerical = data.required.numerical || false;
+  const min = (data.required.min !== undefined || false) ? Number(data.required.min) : (numerical ? Number.MIN_SAFE_INTEGER : 1);
+  const max = (data.required.max !== undefined || false) ? Number(data.required.max) : Number.MAX_VALUE;
+  const value = ((answer && answer.text) || false) ? (numerical ? Number (answer.text) : answer.text.length) : 0;
+
+  if (value < min) {
+    return `Answer ${numerical ? '' : 'length '}is below required value`;
+  }
+  if (value > max) {
+    return `Answer ${numerical ? '' : 'length '}is above required value`;
+  }
+
+  return undefined;
+}
+
 const ShortTextQuestion = (props) => {
   const { language, data, answer, setAnswers, id } = props;
   const labelRef = data.questions ? data.questions.find((specific) => specific.language === language) : undefined;

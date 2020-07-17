@@ -2,6 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Col } from 'react-bootstrap';
 
+export const verifyAnswer = (data, answer) => {
+  if (!((data.required && data.required.status) || false)) {
+    return undefined;
+  }
+
+  if (!(answer && answer.value) || false) {
+    return 'Field can\'t be empty';
+  }
+
+  const validAnswers = (data.required.values || false) ? data.required.values : [];
+  if (!validAnswers.includes(answer.value)) {
+    return 'Invalid answer';
+  }
+
+  return undefined;
+}
+
 const SelectOneQuestion = (props) => {
   const { language, data, answer, setAnswers, id } = props;
   const labelRef = data.questions ? data.questions.find((specific) => specific.language === language) : undefined;

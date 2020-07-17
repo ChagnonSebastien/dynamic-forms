@@ -2,6 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Col } from 'react-bootstrap';
 
+export const verifyAnswer = (data, answer) => {
+  if (!((data.required && data.required.status) || false)) {
+    return undefined;
+  }
+
+  if (!(answer && answer.values) || answer.values.length === 0) {
+    return 'At least one must be selected';
+  }
+
+  return undefined;
+}
+
 const SelectAtLeastOneQuestion = (props) => {
   const { language, data, answer, setAnswers, id } = props;
   const labelRef = data.questions ? data.questions.find((specific) => specific.language === language) : undefined;

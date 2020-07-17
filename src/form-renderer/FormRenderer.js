@@ -1,22 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form } from 'react-bootstrap';
-import CheckboxQuestion from './CheckBoxQuestion';
-import SelectOneQuestion from './SelectOneQuestion';
-import SelectAtLeastOneQuestion from './SelectAtLeastOneQuestion';
-import ShortTextQuestion from './ShortTextQuestion';
-import LongTextQuestion from './LongTextQuestion';
+import CheckboxQuestion, { verifyAnswer as checkboxVerify} from './CheckBoxQuestion';
+import SelectOneQuestion, { verifyAnswer as selectOneVerify} from './SelectOneQuestion';
+import SelectAtLeastOneQuestion, { verifyAnswer as selectAtLeastOneVerify} from './SelectAtLeastOneQuestion';
+import ShortTextQuestion, { verifyAnswer as shortTextVerify} from './ShortTextQuestion';
+import LongTextQuestion, { verifyAnswer as longTextVerify} from './LongTextQuestion';
 import TextZone from './TextZone';
 
 const FormRenderer = (props) => {
-  const { form, answers, setAnswers, language, submit } = props;
+  const { form, answers, setAnswers, language, submit, preventValidationOnErrors } = props;
+
+  const [errors, setErrors] = useState([]);
 
   return (
     <Form>
       {form.map((formElement) => {
         const { data, id, type } = formElement;
 
-        const elementProps = {key: id, id, language, data, answer: answers.find((answer) => answer.id === id), setAnswers}
+        const elementProps = {
+          key: id, id, language, data, setAnswers,
+          answer: answers.find((answer) => answer.id === id),
+          error: errors.find((answer) => answer.id === id)
+        }
+
         switch (type) {
           case 'checkbox':
             return <CheckboxQuestion {...elementProps} />;
@@ -35,7 +42,38 @@ const FormRenderer = (props) => {
         }
       })}
       <br />
-      <Button onClick={submit}>
+      <Button onClick={() => {
+        const individualErrors = form.map((formElement) => {
+          const { data, id, type } = formElement;
+
+          let error;
+          switch (type) {
+            case 'checkbox':
+              error = checkboxVerify(data, answers.find((answer) => answer.id === id));
+              break;
+            case 'select-one':
+              error = selectOneVerify(data, answers.find((answer) => answer.id === id));
+              break;
+            case 'select-at-least-one':
+              error = selectAtLeastOneVerify(data, answers.find((answer) => answer.id === id));
+              break;
+            case 'short-string':
+              error = shortTextVerify(data, answers.find((answer) => answer.id === id));
+              break;
+            case 'long-string':
+              error = longTextVerify(data, answers.find((answer) => answer.id === id));
+              break;
+            default:
+          }
+          return { id, error };
+        }).filter((potentialError) => potentialError.error);
+
+        if (preventValidationOnErrors && individualErrors.length > 0) {
+          setErrors(individualErrors);
+        } else {
+          submit(individualErrors);
+        }
+      }}>
         Submit
       </Button>
     </Form>
@@ -79,8 +117,12 @@ FormRenderer.propTypes = {
   setAnswers: PropTypes.func.isRequired,
   language: PropTypes.string.isRequired,
   submit: PropTypes.func.isRequired,
+  preventValidationOnErrors: PropTypes.bool,
 };
 
-FormRenderer.defaultProps = { preview: false };
+FormRenderer.defaultProps = {
+  preview: false,
+  preventValidationOnErrors: false,
+};
 
 export default FormRenderer;
