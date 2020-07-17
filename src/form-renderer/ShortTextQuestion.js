@@ -23,9 +23,16 @@ export const verifyAnswer = (data, answer) => {
 }
 
 const ShortTextQuestion = (props) => {
-  const { language, data, answer, setAnswers, id } = props;
+  const { language, data, answer, setAnswers, id, error } = props;
   const labelRef = data.questions ? data.questions.find((specific) => specific.language === language) : undefined;
-  const label = labelRef ? labelRef.text : '';
+  const labelText = labelRef ? labelRef.text : '';
+
+  const label = (
+    <>
+      {labelText}
+      {error ? <div style={{ color: 'red', fontSize: '0.8rem' }} className="ml-4">*{error.error}</div> : null}
+    </>
+  );
 
   return (
     <Form.Row className="mt-4">
@@ -90,8 +97,15 @@ ShortTextQuestion.propTypes = {
   answer: PropTypes.shape({
     text: PropTypes.string,
   }),
+  error: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    error: PropTypes.string.isRequired,
+  }),
 };
 
-ShortTextQuestion.defaultProps = { answer: undefined };
+ShortTextQuestion.defaultProps = {
+  answer: undefined,
+  error: undefined,
+};
 
 export default ShortTextQuestion;

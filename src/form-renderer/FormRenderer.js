@@ -35,7 +35,7 @@ export const verifyAnswers = (form, answers) => form.map((formElement) => {
 
 
 const FormRenderer = (props) => {
-  const { form, answers, setAnswers, language, submit, preventValidationOnErrors } = props;
+  const { form, answers, setAnswers, language, submit, preventSubmitOnErrors } = props;
 
   const [errors, setErrors] = useState([]);
 
@@ -70,7 +70,7 @@ const FormRenderer = (props) => {
       <br />
       <Button onClick={() => {
         const individualErrors = verifyAnswers(form, answers);
-        if (preventValidationOnErrors && individualErrors.length > 0) {
+        if (preventSubmitOnErrors && individualErrors.length > 0) {
           setErrors(individualErrors);
         } else {
           submit(individualErrors);
@@ -119,12 +119,12 @@ FormRenderer.propTypes = {
   setAnswers: PropTypes.func.isRequired,
   language: PropTypes.string.isRequired,
   submit: PropTypes.func.isRequired,
-  preventValidationOnErrors: PropTypes.bool,
+  preventSubmitOnErrors: PropTypes.bool,
 };
 
 FormRenderer.defaultProps = {
   preview: false,
-  preventValidationOnErrors: false,
+  preventSubmitOnErrors: false,
 };
 
 export default FormRenderer;

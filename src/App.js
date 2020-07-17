@@ -8,7 +8,7 @@ const App = () => {
   const [answers, setAnswers] = useState([]);
 
   const updateForm = (updateFunction) => {
-    console.table(JSON.stringify(updateFunction(form)));
+    console.log(JSON.stringify(updateFunction(form)));
     setForm(updateFunction)
   }
 
@@ -77,6 +77,7 @@ const App = () => {
             language="fr"
             answers={answers}
             setAnswers={setAnswers}
+            preventSubmitOnErrors
             submit={(errors) => {
               console.log(errors.length === 0 ? 'Form is valid!' : 'Invalid Form :(');
               if (errors.length > 0) {

@@ -17,12 +17,19 @@ export const verifyAnswer = (data, answer) => {
   }
 
   return undefined;
-}
+};
 
 const SelectOneQuestion = (props) => {
-  const { language, data, answer, setAnswers, id } = props;
+  const { language, data, answer, setAnswers, id, error } = props;
   const labelRef = data.questions ? data.questions.find((specific) => specific.language === language) : undefined;
-  const label = labelRef ? labelRef.text : '';
+  const labelText = labelRef ? labelRef.text : '';
+
+  const label = (
+    <>
+      {labelText}
+      {error ? <div style={{ color: 'red', fontSize: '0.8rem' }} className="ml-4">*{error.error}</div> : null}
+    </>
+  );
 
   const answers = data.answers ? data.answers : [];
 
@@ -87,8 +94,15 @@ SelectOneQuestion.propTypes = {
   answer: PropTypes.shape({
     value: PropTypes.string,
   }),
+  error: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    error: PropTypes.string.isRequired,
+  }),
 };
 
-SelectOneQuestion.defaultProps = { answer: undefined };
+SelectOneQuestion.defaultProps = {
+  answer: undefined,
+  error: undefined,
+};
 
 export default SelectOneQuestion;

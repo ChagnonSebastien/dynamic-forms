@@ -14,10 +14,17 @@ export const verifyAnswer = (data, answer) => {
 }
 
 const CheckboxQuestion = (props) => {
-  const { language, data, answer, setAnswers, id } = props;
+  const { language, data, answer, setAnswers, id, error } = props;
   const labelRef = data.questions ? data.questions.find((specific) => specific.language === language) : undefined;
-  const label = labelRef ? labelRef.text : '';
+  const labelText = labelRef ? labelRef.text : '';
 
+  const label = (
+    <>
+      {labelText}
+      {error ? <span style={{ color: 'red', fontSize: '0.8rem' }} className="ml-4">*{error.error}</span> : null}
+    </>
+  );
+  
   return (
     <Form.Row>
       <Col>
@@ -59,8 +66,15 @@ CheckboxQuestion.propTypes = {
   answer: PropTypes.shape({
     checked: PropTypes.bool,
   }),
+  error: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    error: PropTypes.string.isRequired,
+  }),
 };
 
-CheckboxQuestion.defaultProps = { answer: undefined };
+CheckboxQuestion.defaultProps = {
+  answer: undefined,
+  error: undefined,
+};
 
 export default CheckboxQuestion;
